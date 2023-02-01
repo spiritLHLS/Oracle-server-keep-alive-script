@@ -106,6 +106,10 @@ EOL
     _green "The memory limit script has been installed at /usr/local/bin/memory-limit.sh"
 }
 
+bandwidth(){
+
+}
+
 uninstall(){
     systemctl stop memory-limit.service
     systemctl disable memory-limit.service
@@ -122,5 +126,3 @@ uninstall(){
     docker rmi boinc   
     _yellow "The boinc has been uninstalled successfully."
 }
-
-
