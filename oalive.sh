@@ -147,13 +147,13 @@ main() {
     case $option in
         1)
             echo "选择你需要占用CPU时使用的程序:"
-            echo "1. BOINC-docker服务 (https://github.com/BOINC/boinc)"
-            echo "2. 本机stress模拟占用-推荐"
+            echo "1. 本机stress模拟占用 推荐"
+            echo "2. BOINC-docker服务 (https://github.com/BOINC/boinc)"
             reading "你的选择：" cpu_option
-            if [ $cpu_option == 1 ]; then
+            if [ $cpu_option == 2 ]; then
                 boinc
             else
-                calculate
+	    	calculate
             fi
             memory
             bandwidth
