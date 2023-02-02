@@ -1,0 +1,9 @@
+[Unit]
+Description=Run the Bandwidth Occupier every 45 minutes
+
+[Timer]
+OnBootSec=15min
+OnUnitActiveSec=45min
+
+[Install]
+WantedBy=timers.target
