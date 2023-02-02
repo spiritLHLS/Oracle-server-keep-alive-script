@@ -62,9 +62,7 @@ do
   fi
 done
 EOL
-
     chmod +x /usr/local/bin/cpu-limit.sh
-
     cat > /etc/systemd/system/cpu-limit.service << EOL
 [Unit]
 Description=Keep CPU usage under 20%
@@ -80,7 +78,6 @@ EOL
     systemctl daemon-reload
     systemctl enable cpu-limit.service
     systemctl start cpu-limit.service
-
     _green "The CPU limit script has been installed at /usr/local/bin/cpu-limit.sh"
 }
 
@@ -97,9 +94,7 @@ do
   fi
 done
 EOL
-
     chmod +x /usr/local/bin/memory-limit.sh
-
     cat > /etc/systemd/system/memory-limit.service << EOL
 [Unit]
 Description=Keep memory usage under 15%
@@ -115,7 +110,6 @@ EOL
     systemctl daemon-reload
     systemctl enable memory-limit.service
     systemctl start memory-limit.service
-
     _green "The memory limit script has been installed at /usr/local/bin/memory-limit.sh"
 }
 
@@ -125,15 +119,18 @@ bandwidth(){
       _yellow "Installing speedtest-cli"
 	  ${PACKAGE_INSTALL[int]} speedtest-cli
     fi
+    if ! command -v bc > /dev/null 2>&1; then
+      echo "bc not found, installing..."
+      _yellow "Installing bc"
+    	${PACKAGE_INSTALL[int]} bc
+    fi
     cat > /usr/local/bin/bandwidth_occupier.sh << EOL
 #!/bin/bash
 max_bandwidth=$(speedtest-cli --bytes --simple | grep -Eo "[0-9]+")
 bandwidth_to_use=$(echo "$max_bandwidth * 0.15" | bc)
 dd if=/dev/zero bs=$bandwidth_to_use count=$((5 * 60))
 EOL
-
     sudo chmod +x /usr/local/bin/bandwidth_occupier.sh
-
     cat > /etc/systemd/system/bandwidth_occupier.timer << EOL
 [Unit]
 Description=Run the Bandwidth Occupier every 45 minutes
@@ -145,7 +142,6 @@ OnUnitActiveSec=45min
 [Install]
 WantedBy=timers.target
 EOL
-
     cat > /etc/systemd/system/bandwidth_occupier.service << EOL
 [Unit]
 Description=Bandwidth Occupier Service
@@ -160,6 +156,7 @@ EOL
     systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
 }
+
 uninstall(){
     docker stop boinc &> /dev/null  
     docker rm boinc &> /dev/null    
@@ -188,7 +185,6 @@ uninstall(){
     fi
     systemctl daemon-reload
 }
-
 
 main() {
     echo "选择你的选项:"
