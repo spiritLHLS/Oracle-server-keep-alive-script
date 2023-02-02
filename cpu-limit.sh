@@ -3,10 +3,9 @@ CPU_USAGE=20
 while true
 do
   CPUS=$(nproc)
-  CPU_LIMIT=$(echo "$CPU_USAGE / $CPUS" | bc -l)
-  stress --cpu "$CPU_LIMIT"
-  cpulimit -e stress -l "$CPU_LIMIT" -b
-  sleep 60
+  stress --cpu "$CPUS"
+  cpulimit -e stress -l "$CPU_LIMIT" --timeout 120
+  sleep 120
   kill -9 $(pidof cpulimit)
   kill -9 $(jobs -p)
   sleep 900
