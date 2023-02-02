@@ -94,6 +94,7 @@ bandwidth(){
     systemctl daemon-reload
     systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
+    _green "The bandwidth limit script has been installed at /usr/local/bin/memory-limit.sh"
 }
 
 uninstall(){
