@@ -50,30 +50,11 @@ boinc() {
 }
 
 calculate() {
-    cat > /usr/local/bin/cpu-limit.sh << EOL
-#!/bin/bash
-CPU_USAGE=15
-CPUS=$(nproc)
-DURATION=$(echo "100 / $CPU_USAGE * $CPUS" | bc)
-for i in $(seq 1 "$CPUS"); do
-  dd if=/dev/zero of=/dev/null &
-done
-sleep $DURATION
-kill $(jobs -p)
-EOL
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/cpu-limit.sh -o cpu-limit.sh && chmod +x cpu-limit.sh
+    mv cpu-limit.sh /usr/local/bin/cpu-limit.sh 
     chmod +x /usr/local/bin/cpu-limit.sh
-    cat > /etc/systemd/system/cpu-limit.service << EOL
-[Unit]
-Description=Keep CPU usage under 20%
-
-[Service]
-User=root
-ExecStart=/bin/bash /usr/local/bin/cpu-limit.sh
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOL
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/cpu-limit.service -o cpu-limit.service && chmod +x cpu-limit.service
+    mv cpu-limit.service /etc/systemd/system/cpu-limit.service 
     systemctl daemon-reload
     systemctl enable cpu-limit.service
     systemctl start cpu-limit.service
@@ -81,35 +62,11 @@ EOL
 }
 
 memory(){
-	cat > /usr/local/bin/memory-limit.sh << EOL
-#!/bin/bash
-while true
-do
-  mem_total=$(free | awk '/Mem/ {print $2}')
-  mem_used=$(free | awk '/Mem/ {print $3}')
-  mem_usage=$(echo "scale=2; $mem_used/$mem_total * 100.0" | bc)
-  if [ $(echo "$mem_usage < 15" | bc) -eq 1 ]; then
-    target_mem_usage=$(echo "scale=0; $mem_total * 0.15 / 1" | bc)
-    stress_mem=$(echo "$target_mem_usage - $mem_used" | bc)
-    stress --vm 1 --vm-bytes "${stress_mem}K"
-  else
-    sleep 1.5
-  fi
-done
-EOL
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/memory-limit.sh -o memory-limit.sh && chmod +x memory-limit.sh
+    mv memory-limit.sh /usr/local/bin/memory-limit.sh
     chmod +x /usr/local/bin/memory-limit.sh
-    cat > /etc/systemd/system/memory-limit.service << EOL
-[Unit]
-Description=Keep memory usage under 15%
-
-[Service]
-User=root
-ExecStart=/bin/bash /usr/local/bin/memory-limit.sh
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOL
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/memory-limit.service -o memory-limit.service && chmod +x memory-limit.service
+    mv memory-limit.service /etc/systemd/system/memory-limit.service
     systemctl daemon-reload
     systemctl enable memory-limit.service
     systemctl start memory-limit.service
@@ -127,34 +84,13 @@ bandwidth(){
       _yellow "Installing bc"
     	${PACKAGE_INSTALL[int]} bc
     fi
-    cat > /usr/local/bin/bandwidth_occupier.sh << EOL
-#!/bin/bash
-max_bandwidth=$(speedtest-cli --bytes --simple | grep -Eo "[0-9]+")
-bandwidth_to_use=$(echo "$max_bandwidth * 0.15" | bc)
-dd if=/dev/zero bs=$bandwidth_to_use count=$((5 * 60))
-EOL
-    sudo chmod +x /usr/local/bin/bandwidth_occupier.sh
-    cat > /etc/systemd/system/bandwidth_occupier.timer << EOL
-[Unit]
-Description=Run the Bandwidth Occupier every 45 minutes
-
-[Timer]
-OnBootSec=15min
-OnUnitActiveSec=45min
-
-[Install]
-WantedBy=timers.target
-EOL
-    cat > /etc/systemd/system/bandwidth_occupier.service << EOL
-[Unit]
-Description=Bandwidth Occupier Service
-
-[Service]
-ExecStart=/bin/bash /usr/local/bin/bandwidth_occupier.sh
-
-[Install]
-WantedBy=multi-user.target
-EOL
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
+    mv bandwidth_occupier.sh /usr/local/bin/bandwidth_occupier.sh
+    chmod +x /usr/local/bin/bandwidth_occupier.sh
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/bandwidth_occupier.timer -o bandwidth_occupier.timer && chmod +x bandwidth_occupier.timer
+    mv bandwidth_occupier.timer /etc/systemd/system/bandwidth_occupier.timer
+    curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/bandwidth_occupier.service -o bandwidth_occupier.service && chmod +x bandwidth_occupier.service
+    mv bandwidth_occupier.service /etc/systemd/system/bandwidth_occupier.service
     systemctl daemon-reload
     systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
