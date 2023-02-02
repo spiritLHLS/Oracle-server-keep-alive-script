@@ -7,6 +7,6 @@ do
   for i in $(seq 1 "$CPUS"); do
     cpulimit -l "$CPU_LIMIT" -b dd if=/dev/zero of=/dev/null &
   done
-  sleep 1800
+  sleep 900
   kill $(jobs -p)
 done
