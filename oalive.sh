@@ -52,15 +52,12 @@ boinc() {
 calculate() {
     cat > /usr/local/bin/cpu-limit.sh << EOL
 #!/bin/bash
-while true
-do
-  cpu=$(top -bn1 | awk '/Cpu\(s\)/ {print $2}' | sed 's/%//')
-  if [ $cpu -gt 20 ]; then
-    sleep 1
-  else
-    stress --cpu 1
-  fi
+CPU_USAGE=20
+CPUS=$(nproc)
+for i in $(seq 1 $CPUS); do
+  dd if=/dev/zero of=/dev/null &
 done
+wait
 EOL
     chmod +x /usr/local/bin/cpu-limit.sh
     cat > /etc/systemd/system/cpu-limit.service << EOL
