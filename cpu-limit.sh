@@ -1,5 +1,8 @@
 #!/bin/bash
 CPU_USAGE=25
+# sudo cgcreate -g cpu:/cpulimit
+# sudo echo 200000 > /sys/fs/cgroup/cpu/cpulimit/cpu.cfs_quota_us
+# sudo cgexec -g cpu:cpulimit stress
 while true
 do
   CPUS=$(nproc)
