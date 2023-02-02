@@ -85,11 +85,13 @@ memory(){
 #!/bin/bash
 while true
 do
-  mem=$(free | awk '/Mem/ {printf("%.2f%\n"), $3/$2 * 100.0}')
-  if [ $(echo "$mem > 15" | bc) -eq 1 ]; then
-    sleep 1
-  else
+  mem_total=$(free | awk '/Mem/ {print $2}')
+  mem_used=$(free | awk '/Mem/ {print $3}')
+  mem_usage=$(echo "scale=2; $mem_used/$mem_total * 100.0" | bc)
+  if [ $(echo "$mem_usage < 15" | bc) -eq 1 ]; then
     stress --vm 1 --vm-bytes 128M
+  else
+    sleep 1
   fi
 done
 EOL
