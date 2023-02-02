@@ -79,11 +79,6 @@ bandwidth(){
       _yellow "Installing speedtest-cli"
 	  ${PACKAGE_INSTALL[int]} speedtest-cli
     fi
-    if ! command -v bc > /dev/null 2>&1; then
-      echo "bc not found, installing..."
-      _yellow "Installing bc"
-    	${PACKAGE_INSTALL[int]} bc
-    fi
     curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
     mv bandwidth_occupier.sh /usr/local/bin/bandwidth_occupier.sh
     chmod +x /usr/local/bin/bandwidth_occupier.sh
@@ -130,6 +125,16 @@ uninstall(){
 }
 
 main() {
+    if ! command -v bc > /dev/null 2>&1; then
+      echo "bc not found, installing..."
+      _yellow "Installing bc"
+    	${PACKAGE_INSTALL[int]} bc
+    fi
+    if ! command -v stress > /dev/null 2>&1; then
+      echo "stress not found, installing..."
+      _yellow "Installing stress"
+    	${PACKAGE_INSTALL[int]} stress
+    fi
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
