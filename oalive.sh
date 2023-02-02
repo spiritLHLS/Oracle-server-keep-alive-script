@@ -160,29 +160,35 @@ EOL
     systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
 }
-
 uninstall(){
-    docker stop boinc  
-    docker rm boinc    
-    docker rmi boinc   
+    docker stop boinc &> /dev/null  
+    docker rm boinc &> /dev/null    
+    docker rmi boinc &> /dev/null   
     _yellow "The boinc has been uninstalled successfully."
-    systemctl stop cpu-limit.service
-    systemctl disable cpu-limit.service
-    rm /etc/systemd/system/cpu-limit.service
-    rm /usr/local/bin/cpu-limit.sh
-    _yellow "The cpu limit script has been uninstalled successfully."
-    systemctl stop memory-limit.service
-    systemctl disable memory-limit.service
-    rm /etc/systemd/system/memory-limit.service
-    rm /usr/local/bin/memory-limit.sh
-    _yellow "The memory limit script has been uninstalled successfully."
-    systemctl stop bandwidth_occupier
-    systemctl disable bandwidth_occupier
-    rm /etc/systemd/system/bandwidth_occupier.service
-    rm /usr/local/bin/bandwidth_occupier.sh
+    if [ -f "/etc/systemd/system/cpu-limit.service" ]; then
+        systemctl stop cpu-limit.service
+        systemctl disable cpu-limit.service
+        rm /etc/systemd/system/cpu-limit.service
+        rm /usr/local/bin/cpu-limit.sh
+        _yellow "The cpu limit script has been uninstalled successfully."
+    fi
+    if [ -f "/etc/systemd/system/memory-limit.service" ]; then
+        systemctl stop memory-limit.service
+        systemctl disable memory-limit.service
+        rm /etc/systemd/system/memory-limit.service
+        rm /usr/local/bin/memory-limit.sh
+        _yellow "The memory limit script has been uninstalled successfully."
+    fi
+    if [ -f "/etc/systemd/system/bandwidth_occupier.service" ]; then
+        systemctl stop bandwidth_occupier
+        systemctl disable bandwidth_occupier
+        rm /etc/systemd/system/bandwidth_occupier.service
+        rm /usr/local/bin/bandwidth_occupier.sh
+        _yellow "The bandwidth occupier script has been uninstalled successfully."
+    fi
     systemctl daemon-reload
-    _yellow "The bandwidth occupier script has been uninstalled successfully."
 }
+
 
 main() {
     echo "选择你的选项:"
