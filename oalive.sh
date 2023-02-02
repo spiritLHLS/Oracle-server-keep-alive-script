@@ -152,6 +152,7 @@ main() {
             fi
             memory
             bandwidth
+	    cpulimit -e stress -l 40 -b
             ;;
         2)
             uninstall
