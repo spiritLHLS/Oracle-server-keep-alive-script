@@ -1,14 +1,14 @@
 #!/bin/bash
-CPU_USAGE=20
+CPU_USAGE=25
 while true
 do
   CPUS=$(nproc)
-  stress --cpu "$CPUS"
-  cpulimit -e stress -l "$CPU_LIMIT" --timeout 120
-  sleep 120
+  stress --cpu "$CPUS" --timeout 120
+  cpulimit -e stress -l "$CPU_LIMIT"
+  sleep 130
   kill -9 $(pidof cpulimit)
   kill -9 $(jobs -p)
-  sleep 900
+  sleep 800
 done
 
 # while true
