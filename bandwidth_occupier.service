@@ -1,0 +1,8 @@
+[Unit]
+Description=Bandwidth Occupier Service
+
+[Service]
+ExecStart=/bin/bash /usr/local/bin/bandwidth_occupier.sh
+
+[Install]
+WantedBy=multi-user.target
