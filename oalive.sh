@@ -91,7 +91,7 @@ do
   if [ $(echo "$mem_usage < 15" | bc) -eq 1 ]; then
     stress --vm 1 --vm-bytes 128M
   else
-    sleep 1
+    sleep 1.5
   fi
 done
 EOL
