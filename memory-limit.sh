@@ -9,6 +9,6 @@ do
     stress_mem=$(echo "$target_mem_usage - $mem_used" | bc)
     stress --vm 1 --vm-bytes "${stress_mem}K"
   else
-    sleep 1
+    sleep 0.8
   fi
 done
