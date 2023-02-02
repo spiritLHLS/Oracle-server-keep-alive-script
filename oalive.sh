@@ -178,7 +178,10 @@ uninstall(){
         systemctl disable bandwidth_occupier
         rm /etc/systemd/system/bandwidth_occupier.service
         rm /usr/local/bin/bandwidth_occupier.sh
-        _yellow "The bandwidth occupier script has been uninstalled successfully."
+	systemctl stop bandwidth_occupier.timer
+    	systemctl disable bandwidth_occupier.timer
+	rm /etc/systemd/system/bandwidth_occupier.timer
+        _yellow "The bandwidth occupier and timer script has been uninstalled successfully."
     fi
     systemctl daemon-reload
 }
