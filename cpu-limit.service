@@ -1,0 +1,10 @@
+[Unit]
+Description=Keep CPU usage under 20%
+
+[Service]
+User=root
+ExecStart=/bin/bash /usr/local/bin/cpu-limit.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
