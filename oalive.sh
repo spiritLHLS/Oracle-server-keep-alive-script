@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.01"
+ver="2023.02.02"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -52,12 +52,14 @@ boinc() {
 calculate() {
     cat > /usr/local/bin/cpu-limit.sh << EOL
 #!/bin/bash
-CPU_USAGE=20
+CPU_USAGE=15
 CPUS=$(nproc)
+DURATION=$(echo "100 / $CPU_USAGE * $CPUS" | bc)
 for i in $(seq 1 $CPUS); do
   dd if=/dev/zero of=/dev/null &
 done
-wait
+sleep $DURATION
+kill $(jobs -p)
 EOL
     chmod +x /usr/local/bin/cpu-limit.sh
     cat > /etc/systemd/system/cpu-limit.service << EOL
