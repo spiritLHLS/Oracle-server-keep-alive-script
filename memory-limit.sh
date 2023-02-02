@@ -13,7 +13,7 @@ do
   else
     sleep 10
     kill -9 $(pidof cpulimit)
-    kill -9 $(jobs -p)
+    cpulimit -e stress -l 30 -b
     sleep 60
   fi
 done
