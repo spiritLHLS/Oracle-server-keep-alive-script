@@ -135,6 +135,11 @@ main() {
       _yellow "Installing stress"
     	${PACKAGE_INSTALL[int]} stress
     fi
+    if ! command -v cpulimit > /dev/null 2>&1; then
+      echo "cpulimit not found, installing..."
+      _yellow "Installing cpulimit"
+    	${PACKAGE_INSTALL[int]} cpulimit
+    fi
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
