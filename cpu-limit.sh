@@ -4,7 +4,7 @@ while true
 do
   CPUS=$(nproc)
   CPU_LIMIT=$(echo "$CPU_USAGE / $CPUS" | bc -l)
-  stress --cpu "$CPU_LIMIT" &
+  cpulimit -l "$CPU_LIMIT" -b stress --cpu "$CPU_LIMIT" &
   sleep 900
   kill $(jobs -p)
 done
