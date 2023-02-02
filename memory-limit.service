@@ -1,0 +1,10 @@
+[Unit]
+Description=Keep memory usage under 15%
+
+[Service]
+User=root
+ExecStart=/bin/bash /usr/local/bin/memory-limit.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
