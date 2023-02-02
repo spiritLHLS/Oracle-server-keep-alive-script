@@ -1,5 +1,5 @@
 #!/bin/bash
-CPU_USAGE=15
+CPU_USAGE=20
 while true
 do
   CPUS=$(nproc)
