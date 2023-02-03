@@ -1,26 +1,28 @@
 #!/bin/bash
-CPU_USAGE=25
-# sudo cgcreate -g cpu:/cpulimit
-# sudo echo 200000 > /sys/fs/cgroup/cpu/cpulimit/cpu.cfs_quota_us
-# sudo cgexec -g cpu:cpulimit stress
-while true
-do
-  CPUS=$(nproc)
-  stress --cpu "$CPUS" --timeout 120
-  cpulimit -e stress -l "$CPU_LIMIT"
-  sleep 130
-  kill -9 $(pidof cpulimit)
-  kill -9 $(jobs -p)
-  sleep 800
+function calculate_primes() {
+  size=$1
+  for ((i=2;i<=$size;i++)); do
+    for ((j=2;j<=i/2;j++)); do
+      if [ $((i%j)) == 0 ]; then
+        break
+      fi
+    done
+    if [ $j -gt $((i/2)) ]; then
+      echo $i
+    fi
+  don
+size=1000
+while true; do
+  cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
+  if (( $(echo "$cpu_usage < 20" | bc -l) )); then
+    size=$((size+200))
+  elif (( $(echo "$cpu_usage > 25" | bc -l) )); then
+    size=$((size-200))
+  fi
+  calculate_primes $size &
+  sleep 30
 done
 
-# while true
-# do
-#   CPUS=$(nproc)
-#   CPU_LIMIT=$(echo "$CPU_USAGE / $CPUS" | bc -l)
-#   for i in $(seq 1 "$CPUS"); do
-#     cpulimit -l "$CPU_LIMIT" -b dd if=/dev/zero of=/dev/null &
-#   done
-#   sleep 900
-#   kill $(jobs -p)
-# done
+
+
+
