@@ -1,4 +1,7 @@
 #!/bin/bash
+# by spiritlhl
+# from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
+
 function calculate_primes() {
   size=$1
   for ((i=2;i<=$size;i++)); do
