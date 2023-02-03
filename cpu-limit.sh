@@ -25,13 +25,13 @@ while true; do
     if [ $((RANDOM % 2)) == 0 ]; then
       size=$((size+10))
     else
-      interval=$((interval-0.5))
+      interval=$(echo "$interval - 0.5" | bc)
     fi
   elif (( $(echo "$cpu_usage > 25" | bc -l) )); then
     if [ $((RANDOM % 2)) == 0 ]; then
       size=$((size-10))
     else
-      interval=$((interval+0.5))
+      interval=$(echo "$interval + 0.5" | bc)
     fi
   fi
   sleep $interval
