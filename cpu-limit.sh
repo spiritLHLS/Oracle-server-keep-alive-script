@@ -34,7 +34,7 @@ while true; do
     if [ $(echo "$interval < $MIN_INTERVAL" | bc -l) -eq 1 ]; then
       interval=$MIN_INTERVAL
     fi
-    nice -n 19 calculate_primes $size &
+    calculate_primes $size &
   elif (( $(echo "$cpu_usage > 25" | bc -l) )); then
     if [ $((RANDOM % 2)) == 0 ]; then
       size=$((size-10))
