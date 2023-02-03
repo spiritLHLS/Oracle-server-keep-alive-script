@@ -144,6 +144,7 @@ main() {
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
+    echo "3. 退出程序"
     reading "你的选择：" option
     case $option in
         1)
