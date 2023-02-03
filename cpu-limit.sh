@@ -11,7 +11,7 @@ function calculate_primes() {
       fi
     done
     if [ $j -gt $((i/2)) ]; then
-      echo $i
+      echo $i &> /dev/null  
     fi
   done
 }
