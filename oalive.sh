@@ -109,6 +109,7 @@ uninstall(){
         systemctl disable memory-limit.service
         rm /etc/systemd/system/memory-limit.service
         rm /usr/local/bin/memory-limit.sh
+	rm /dev/shm/file
         _yellow "The memory limit script has been uninstalled successfully."
     fi
     if [ -f "/etc/systemd/system/bandwidth_occupier.service" ]; then
