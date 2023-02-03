@@ -17,7 +17,7 @@ function calculate_primes() {
 }
 
 size=500
-interval=5
+interval=2
 while true; do
   cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
   calculate_primes $size &
