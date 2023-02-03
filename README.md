@@ -22,6 +22,10 @@ curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-sc
 bash oalive.sh
 ```
 
+选项1安装，选项2卸载，选项3退出脚本
+
+安装过程中无脑回车则全部可选的占用都占用，不需要什么占用输入```n```再回车
+
 ### 说明
 
 - CPU占用有计算素数模式和科学计算模式可自由选择，设定占用区间为15~25%
