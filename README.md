@@ -8,17 +8,13 @@
 
 可选占用：CPU，内存，带宽
 
-### BUG
-
-system call 调用太多，AMD的服务器CPU占用过高了，待修复
+安装完毕后等待1~3分钟看看占用情况，如果有问题请卸载脚本反馈问题
 
 ### 开发完毕，测试中，有问题请在issues中反馈
 
-```
-bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh)
-```
+选项1安装，选项2卸载，选项3退出脚本
 
-或
+安装过程中无脑回车则全部可选的占用都占用，不需要什么占用输入```n```再回车
 
 ```
 curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh -o oalive.sh && chmod +x oalive.sh && bash oalive.sh
@@ -30,9 +26,11 @@ curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-sc
 bash oalive.sh
 ```
 
-选项1安装，选项2卸载，选项3退出脚本
+或
 
-安装过程中无脑回车则全部可选的占用都占用，不需要什么占用输入```n```再回车
+```
+bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh)
+```
 
 ### 说明
 
