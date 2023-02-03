@@ -98,7 +98,6 @@ uninstall(){
     docker stop boinc &> /dev/null  
     docker rm boinc &> /dev/null    
     docker rmi boinc &> /dev/null   
-#     _yellow "The boinc has been uninstalled successfully."
     if [ -f "/etc/systemd/system/cpu-limit.service" ]; then
         systemctl stop cpu-limit.service
         systemctl disable cpu-limit.service
