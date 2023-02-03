@@ -27,13 +27,13 @@ while true; do
       interval=$(echo "$interval - 0.5" | bc)
     fi
     calculate_primes $size &
-#   elif (( $(echo "$cpu_usage > 30" | bc -l) )); then
-#     if [ $((RANDOM % 2)) == 0 ]; then
-#       size=$((size-10))
-#     else
-#       interval=$(echo "$interval + 0.5" | bc)
-#     fi
-#     calculate_primes $size &
+  elif (( $(echo "$cpu_usage > 30" | bc -l) )); then
+    if [ $((RANDOM % 2)) == 0 ]; then
+      size=$((size-10))
+    else
+      interval=$(echo "$interval + 0.5" | bc)
+    fi
+    calculate_primes $size &
   else
     echo ""
   fi
