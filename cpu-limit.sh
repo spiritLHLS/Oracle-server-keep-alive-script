@@ -16,14 +16,14 @@ function calculate_primes() {
   done
 }
 
-size=1000
+size=100
 while true; do
   cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
   if (( $(echo "$cpu_usage < 20" | bc -l) )); then
-    size=$((size+100))
+    size=$((size+50))
     calculate_primes $size &
   elif (( $(echo "$cpu_usage > 25" | bc -l) )); then
-    size=$((size-100))
+    size=$((size-50))
     calculate_primes $size &
   fi
   sleep 2
