@@ -17,13 +17,13 @@ function calculate_primes() {
 }
 
 size=350
-interval=5
+interval=10
 MIN_SIZE=100
 MIN_INTERVAL=3
 while true; do
   cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
   if (( $(echo "$cpu_usage < 15" | bc -l) )); then
-    if [ $((RANDOM % 2)) == 0 ]; then
+    if [ $(( $(date +%s) % 2 )) == 0 ]; then
       size=$((size+10))
     else
       interval=$(echo "$interval - 0.5" | bc)
@@ -34,9 +34,9 @@ while true; do
     if [ $(echo "$interval < $MIN_INTERVAL" | bc -l) -eq 1 ]; then
       interval=$MIN_INTERVAL
     fi
-    calculate_primes $size &
+    nice -n 19 calculate_primes $size &
   elif (( $(echo "$cpu_usage > 25" | bc -l) )); then
-    if [ $((RANDOM % 2)) == 0 ]; then
+    if [ $(( $(date +%s) % 2 )) == 0 ]; then
       size=$((size-10))
     else
       interval=$(echo "$interval + 0.5" | bc)
@@ -52,4 +52,3 @@ while true; do
   fi
   sleep $interval
 done
-
