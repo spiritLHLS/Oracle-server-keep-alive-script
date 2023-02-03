@@ -131,16 +131,16 @@ main() {
       _yellow "Installing bc"
     	${PACKAGE_INSTALL[int]} bc
     fi
-    if ! command -v stress > /dev/null 2>&1; then
-      echo "stress not found, installing..."
-      _yellow "Installing stress"
-    	${PACKAGE_INSTALL[int]} stress
+    if ! command -v memtester > /dev/null 2>&1; then
+      echo "memtester not found, installing..."
+      _yellow "Installing memtester"
+    	${PACKAGE_INSTALL[int]} memtester
     fi
-    if ! command -v cpulimit > /dev/null 2>&1; then
-      echo "cpulimit not found, installing..."
-      _yellow "Installing cpulimit"
-    	${PACKAGE_INSTALL[int]} cpulimit
-    fi
+#     if ! command -v cpulimit > /dev/null 2>&1; then
+#       echo "cpulimit not found, installing..."
+#       _yellow "Installing cpulimit"
+#     	${PACKAGE_INSTALL[int]} cpulimit
+#     fi
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
@@ -158,7 +158,6 @@ main() {
             fi
             memory
             bandwidth
-	    cpulimit -e stress -l 40 -b
             ;;
         2)
             uninstall
