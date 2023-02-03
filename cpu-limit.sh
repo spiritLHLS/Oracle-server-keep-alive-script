@@ -33,7 +33,7 @@ while true; do
     else
       interval=$(echo "$interval + 0.5" | bc)
     fi
-    calculate_primes $size &
+#     calculate_primes $size &
   else
     echo ""
   fi
