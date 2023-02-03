@@ -96,21 +96,21 @@ uninstall(){
     docker stop boinc &> /dev/null  
     docker rm boinc &> /dev/null    
     docker rmi boinc &> /dev/null   
-    _yellow "The boinc has been uninstalled successfully."
+#     _yellow "The boinc has been uninstalled successfully."
     if [ -f "/etc/systemd/system/cpu-limit.service" ]; then
         systemctl stop cpu-limit.service
         systemctl disable cpu-limit.service
         rm /etc/systemd/system/cpu-limit.service
         rm /usr/local/bin/cpu-limit.sh
-        _yellow "The cpu limit script has been uninstalled successfully."
     fi
+    _yellow "已卸载CPU占用 - The cpu limit script has been uninstalled successfully."
     if [ -f "/etc/systemd/system/memory-limit.service" ]; then
         systemctl stop memory-limit.service
         systemctl disable memory-limit.service
         rm /etc/systemd/system/memory-limit.service
         rm /usr/local/bin/memory-limit.sh
 	rm /dev/shm/file
-        _yellow "The memory limit script has been uninstalled successfully."
+        _yellow "已卸载内存占用 - The memory limit script has been uninstalled successfully."
     fi
     if [ -f "/etc/systemd/system/bandwidth_occupier.service" ]; then
         systemctl stop bandwidth_occupier
@@ -120,7 +120,7 @@ uninstall(){
 	systemctl stop bandwidth_occupier.timer
     	systemctl disable bandwidth_occupier.timer
 	rm /etc/systemd/system/bandwidth_occupier.timer
-        _yellow "The bandwidth occupier and timer script has been uninstalled successfully."
+        _yellow "已卸载带宽占用 - The bandwidth occupier and timer script has been uninstalled successfully."
     fi
     systemctl daemon-reload
 }
