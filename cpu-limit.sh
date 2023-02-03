@@ -17,7 +17,7 @@ function calculate_primes() {
 }
 
 size=350
-interval=5
+interval=10
 while true; do
   cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
   if (( $(echo "$cpu_usage < 15" | bc -l) )); then
