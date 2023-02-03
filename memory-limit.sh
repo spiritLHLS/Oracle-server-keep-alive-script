@@ -1,4 +1,7 @@
 #!/bin/bash
+# by spiritlhl
+# from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
+
 while true
 do
   mem_total=$(free | awk '/Mem/ {print $2}')
