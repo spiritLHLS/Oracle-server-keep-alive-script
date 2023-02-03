@@ -17,16 +17,22 @@ function calculate_primes() {
 }
 
 size=500
-interval=2
+interval=5
 while true; do
   cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
   calculate_primes $size &
   if (( $(echo "$cpu_usage < 20" | bc -l) )); then
-    size=$((size+10))
-    interval=$((interval+1))
+    if [ $((RANDOM % 2)) == 0 ]; then
+      size=$((size+10))
+    else
+      interval=$((interval-0.5))
+    fi
   elif (( $(echo "$cpu_usage > 25" | bc -l) )); then
-    size=$((size-10))
-    interval=$((interval-1))
+    if [ $((RANDOM % 2)) == 0 ]; then
+      size=$((size-10))
+    else
+      interval=$((interval+0.5))
+    fi
   fi
   sleep $interval
 done
