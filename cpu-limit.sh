@@ -13,7 +13,9 @@ function calculate_primes() {
     if [ $j -gt $((i/2)) ]; then
       echo $i
     fi
-  don
+  done
+}
+
 size=1000
 while true; do
   cpu_usage=$(top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4}')
@@ -26,7 +28,3 @@ while true; do
   fi
   sleep 1
 done
-
-
-
-
