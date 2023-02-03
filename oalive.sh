@@ -55,8 +55,8 @@ calculate() {
     chmod +x /usr/local/bin/cpu-limit.sh
     curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/cpu-limit.service -o cpu-limit.service && chmod +x cpu-limit.service
     mv cpu-limit.service /etc/systemd/system/cpu-limit.service
-    line_number=$(grep -n "Restart=always" /etc/systemd/system/cpu-limit.service | cut -d: -f1)
-    sed -i "${line_number}a CPUQuota=45%" /etc/systemd/system/cpu-limit.service
+#     line_number=$(grep -n "Restart=always" /etc/systemd/system/cpu-limit.service | cut -d: -f1)
+#     sed -i "${line_number}a CPUQuota=45%" /etc/systemd/system/cpu-limit.service
     systemctl daemon-reload
     systemctl enable cpu-limit.service
     systemctl start cpu-limit.service
