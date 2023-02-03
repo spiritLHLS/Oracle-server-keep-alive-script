@@ -4,7 +4,7 @@
 
 所有资源都是动态占用，实时调整，避免服务器有别的任何资源已经超过限额了仍然再占用资源。
 
-### 开发中，勿要使用，开发进度90%
+### 开发完毕，测试中，有问题请在issues中反馈
 
 ```
 bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh)
