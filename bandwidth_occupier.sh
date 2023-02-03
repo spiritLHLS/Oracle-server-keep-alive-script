@@ -9,5 +9,7 @@ for url in "${urls[@]}"; do
     selected_url=$url
   fi
 done
-echo "Selected URL: $selected_url with ping time: $lowest_ping ms"
-
+# echo "Selected URL: $selected_url with ping time: $lowest_ping ms"
+bandwidth=$(speedtest-cli --simple | awk '/^Download/ {print $2}')
+rate=$(echo "($bandwidth * 0.2)/1" | bc)
+timeout 10m wget $selected_url --limit-rate=$rate -O /dev/null &
