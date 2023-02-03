@@ -138,11 +138,6 @@ main() {
       _yellow "Installing fallocate"
       ${PACKAGE_INSTALL[int]} fallocate
     fi
-#     if ! command -v cpulimit > /dev/null 2>&1; then
-#       echo "cpulimit not found, installing..."
-#       _yellow "Installing cpulimit"
-#     	${PACKAGE_INSTALL[int]} cpulimit
-#     fi
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
@@ -153,14 +148,23 @@ main() {
             echo "选择你需要占用CPU时使用的程序:"
             echo "1. 本机素数计算模拟占用(20%~25%) 推荐"
             echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc)"
+	    echo "3. 不限制"
             reading "你的选择：" cpu_option
             if [ $cpu_option == 2 ]; then
                 boinc
+	    elif [ $cpu_option == 3 ]; then
+    		echo ""
             else
-	    	calculate
+                calculate
             fi
-            memory
-            bandwidth
+            reading "需要限制内存吗? (y/n): " memory_confirm
+            if [ "$memory_confirm" != "n" ]; then
+                memory
+            fi
+            reading "需要限制带宽吗? (y/n): " bandwidth_confirm
+            if [ "$bandwidth_confirm" != "n" ]; then
+                bandwidth
+            fi
             ;;
         2)
             uninstall
@@ -172,5 +176,6 @@ main() {
             ;;
     esac
 }
+
 
 main
