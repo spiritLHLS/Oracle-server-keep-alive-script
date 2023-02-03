@@ -131,10 +131,10 @@ main() {
       _yellow "Installing bc"
     	${PACKAGE_INSTALL[int]} bc
     fi
-    if ! command -v stress-ng > /dev/null 2>&1; then
-      echo "stress-ng not found, installing..."
-      _yellow "Installing stress-ng"
-    	${PACKAGE_INSTALL[int]} stress-ng
+    if ! command -v fallocate > /dev/null 2>&1; then
+      echo "fallocate not found, installing..."
+      _yellow "Installing fallocate"
+    	${PACKAGE_INSTALL[int]} fallocate
     fi
 #     if ! command -v cpulimit > /dev/null 2>&1; then
 #       echo "cpulimit not found, installing..."
