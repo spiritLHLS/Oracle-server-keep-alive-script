@@ -131,11 +131,11 @@ main() {
       _yellow "Installing bc"
     	${PACKAGE_INSTALL[int]} bc
     fi
-    if ! command -v fallocate > /dev/null 2>&1; then
-      echo "fallocate not found, installing..."
-      _yellow "Installing fallocate"
-    	${PACKAGE_INSTALL[int]} fallocate
-    fi
+#     if ! command -v fallocate > /dev/null 2>&1; then
+#       echo "fallocate not found, installing..."
+#       _yellow "Installing fallocate"
+#     	${PACKAGE_INSTALL[int]} fallocate
+#     fi
 #     if ! command -v cpulimit > /dev/null 2>&1; then
 #       echo "cpulimit not found, installing..."
 #       _yellow "Installing cpulimit"
