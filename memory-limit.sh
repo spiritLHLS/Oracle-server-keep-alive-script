@@ -10,10 +10,12 @@ do
   if [ $(echo "$mem_usage < 25" | bc) -eq 1 ]; then
     target_mem_usage=$(echo "scale=0; $mem_total * 0.25 / 1" | bc)
     stress_mem=$(echo "$target_mem_usage - $mem_used" | bc)
-    stress_mem_in_mb=$(echo "scale=0; $stress_mem / 1024" | bc)
-    dd if=/dev/zero of=/tmp/dd.tmp bs=1024k count="${stress_mem_in_mb}"
-    timeout 60 rm /tmp/dd.tmp
+    stress_mem_in_gb=$(echo "scale=0; $stress_mem / 1024 / 1024" | bc)
+    fallocate -l "${stress_mem_in_gb}G" /dev/shm/file
+    sleep 60
+    rm /dev/shm/file
   else
     sleep 0.8
   fi
 done
+
