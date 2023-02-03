@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.02"
+ver="2023.02.03"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -125,6 +125,7 @@ uninstall(){
 }
 
 main() {
+    _green "更新时间： $ver"
     if ! command -v bc > /dev/null 2>&1; then
       echo "bc not found, installing..."
       _yellow "Installing bc"
