@@ -146,7 +146,7 @@ main() {
     case $option in
         1)
             echo "选择你需要占用CPU时使用的程序:"
-            echo "1. 本机素数计算模拟占用(20%~25%) 推荐"
+            echo "1. 本机素数计算模拟占用(20%~25%) [推荐]"
             echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc)"
 	    echo "3. 不限制"
             reading "你的选择：" cpu_option
@@ -157,11 +157,11 @@ main() {
             else
                 calculate
             fi
-            reading "需要限制内存吗? (y/n): " memory_confirm
+            reading "需要限制内存吗? ([y]/n): " memory_confirm
             if [ "$memory_confirm" != "n" ]; then
                 memory
             fi
-            reading "需要限制带宽吗? (y/n): " bandwidth_confirm
+            reading "需要限制带宽吗? ([y]/n): " bandwidth_confirm
             if [ "$bandwidth_confirm" != "n" ]; then
                 bandwidth
             fi
