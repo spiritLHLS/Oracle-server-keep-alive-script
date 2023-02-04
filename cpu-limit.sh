@@ -16,8 +16,14 @@ function calculate_primes() {
   done
 }
 
-size=450
-interval=10
+arch=$(uname -m)
+if [ $arch = "arm" ]; then
+  size=600
+  interval=5
+else
+  size=450
+  interval=10
+fi
 MIN_SIZE=200
 MIN_INTERVAL=2
 while true; do
