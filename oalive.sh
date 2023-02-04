@@ -132,7 +132,7 @@ uninstall(){
 }
 
 main() {
-    _green "更新时间： $ver"
+    _green "当前脚本更新时间(请注意比对仓库说明)： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
     if ! command -v wget > /dev/null 2>&1; then
       echo "wget not found, installing..."
