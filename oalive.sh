@@ -99,8 +99,8 @@ bandwidth(){
         reading "输入你需要的带宽大小(以mbps为单位，例如10mbps输入10): " rate_mbps
 	rate=$(( rate_mbps * 1000000 ))
         reading "输入你需要请求的时长(以分钟为单位，例如10分钟输入10m): " timeout
-	sed '$d' /usr/local/bin/bandwidth_occupier.sh > tmpfile && mv tmpfile /usr/local/bin/bandwidth_occupier.sh
-        sed -i "s/timeout.*/timeout $timeout wget \$selected_url --limit-rate=$rate -O \/dev\/null &/" /usr/local/bin/bandwidth_occupier.sh
+	sed -i 's/^timeout/#timeout/' /usr/local/bin/bandwidth_occupier.sh
+        sed -i '$ a\timeout $timeout wget $selected_url --limit-rate=$rate -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
 	reading "输入你需要间隔的时长(以分钟为单位，例如45分钟输入45): " interval
         sed -i "s/^OnUnitActiveSec.*/OnUnitActiveSec=$interval/" /etc/systemd/system/bandwidth_occupier.timer
     else
