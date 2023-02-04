@@ -57,7 +57,7 @@ calculate() {
     mv cpu-limit.service /etc/systemd/system/cpu-limit.service
     line_number=$(grep -n "Restart=always" /etc/systemd/system/cpu-limit.service | cut -d: -f1)
     total_cores=$(grep -c ^processor /proc/cpuinfo)
-    cpu_limit=$(echo "($total_cores * 11 / 100 + 0.5) / 1" | bc)
+    cpu_limit=$(echo "($total_cores * 13 / 100 + 0.5) / 1" | bc)
     sed -i "${line_number}a CPUQuota=${cpu_limit}%" /etc/systemd/system/cpu-limit.service
     systemctl daemon-reload
     systemctl enable cpu-limit.service
