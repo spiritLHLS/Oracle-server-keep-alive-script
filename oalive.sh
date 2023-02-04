@@ -109,7 +109,7 @@ bandwidth(){
     systemctl daemon-reload
     systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
-    _green "带宽限制安装成功 - The bandwidth limit script has been installed at /usr/local/bin/memory-limit.sh"
+    _green "带宽限制安装成功 - The bandwidth limit script has been installed at /usr/local/bin/bandwidth_occupier.sh"
 }
 
 uninstall(){
