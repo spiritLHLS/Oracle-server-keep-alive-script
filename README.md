@@ -42,3 +42,9 @@ bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spirit
 - 带宽占用动态调整实际下载带宽/速率，限制下载时长最长10分钟，每次下载前先测试最大可用带宽实时调整为20%带宽下载
 - 占用过程中使用守护进程和开机自启服务，保证占用任务持续且有效
 - 可选择一键卸载所有占用服务，卸载会将所有脚本和服务卸载，包括任务、守护进程和开机自启的设置
+
+### 友链
+
+VPS融合怪测评脚本
+
+https://github.com/spiritLHLS/ecs
