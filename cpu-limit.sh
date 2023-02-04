@@ -17,7 +17,7 @@ function calculate_primes() {
 }
 
 arch=$(uname -m)
-if [ $arch = "arm" ]; then
+if [ "$arch" = "armv7l" ] || [ "$arch" = "armv8" ] || [ "$arch" = "armv8l" ] || [ "$arch" = "aarch64" ] || [ "$arch" = "arm" ] ; then
   size=600
   interval=5
 else
