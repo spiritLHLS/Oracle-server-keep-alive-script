@@ -54,6 +54,10 @@ VPS融合怪测评脚本
 
 https://github.com/spiritLHLS/ecs
 
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script.svg)](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script)
+
 ### SEO关键词
 
 甲骨文保活，甲骨文OCI保活，甲骨文资源占用，甲骨文免费服务器，甲骨文服务器闲置使用必备。
@@ -61,3 +65,5 @@ https://github.com/spiritLHLS/ecs
 资源定期浪费，可用于 Oracle 甲骨文保活。
 
 为了应对甲骨文最新回收机制而作的脚本。
+
+
