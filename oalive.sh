@@ -46,7 +46,8 @@ boinc() {
       exit 1
     fi
     systemctl enable docker
-    _green "CPU限制安装成功 - Boinc is installed as docker and using"
+    _green "CPU限制安装成功"
+    _green "Boinc is installed as docker and using"
 }
 
 calculate() {
@@ -65,7 +66,8 @@ calculate() {
     systemctl daemon-reload
     systemctl enable cpu-limit.service
     systemctl start cpu-limit.service
-    _green "CPU限制安装成功 - The CPU limit script has been installed at /usr/local/bin/cpu-limit.sh"
+    _green "CPU限制安装成功 脚本路径: /usr/local/bin/cpu-limit.sh"
+    _green "The CPU limit script has been installed at /usr/local/bin/cpu-limit.sh"
 }
 
 memory(){
@@ -77,7 +79,8 @@ memory(){
     systemctl daemon-reload
     systemctl enable memory-limit.service
     systemctl start memory-limit.service
-    _green "内存限制安装成功 - The memory limit script has been installed at /usr/local/bin/memory-limit.sh"
+    _green "内存限制安装成功 脚本路径: /usr/local/bin/memory-limit.sh" 
+    _green "The memory limit script has been installed at /usr/local/bin/memory-limit.sh"
 }
 
 bandwidth(){
@@ -109,7 +112,8 @@ bandwidth(){
     systemctl daemon-reload
     systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
-    _green "带宽限制安装成功 - The bandwidth limit script has been installed at /usr/local/bin/bandwidth_occupier.sh"
+    _green "带宽限制安装成功 脚本路径: /usr/local/bin/bandwidth_occupier.sh"
+    _green "The bandwidth limit script has been installed at /usr/local/bin/bandwidth_occupier.sh"
 }
 
 uninstall(){
