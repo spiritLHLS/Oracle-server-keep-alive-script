@@ -129,6 +129,11 @@ uninstall(){
 main() {
     _green "更新时间： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
+    if ! command -v wget > /dev/null 2>&1; then
+      echo "wget not found, installing..."
+      _yellow "Installing wget"
+      ${PACKAGE_INSTALL[int]} wget
+    fi
     if ! command -v bc > /dev/null 2>&1; then
       echo "bc not found, installing..."
       _yellow "Installing bc"
