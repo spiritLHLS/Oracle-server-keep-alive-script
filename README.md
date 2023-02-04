@@ -18,7 +18,7 @@
 
 安装过程中无脑回车则全部可选的占用都占用，不需要什么占用输入```n```再回车
 
-最后会询问是否需要自定义带宽占用参数自定义，这时候默认选项就是```n```，回车就使用默认配置，输入```y```再回车则需要按照提示自定义参数
+最后会询问是否需要带宽占用的参数自定义，这时候默认选项就是```n```，回车就使用默认配置，输入```y```再回车则需要按照提示自定义参数
 
 ```
 curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh -o oalive.sh && chmod +x oalive.sh && bash oalive.sh
