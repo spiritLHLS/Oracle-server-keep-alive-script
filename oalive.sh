@@ -8,6 +8,8 @@ _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
 _blue() { echo -e "\033[36m\033[01m$@\033[0m"; }
 reading(){ read -rp "$(_green "$1")" "$2"; }
+RED="\033[31m"
+PLAIN="\033[0m"
 REGEX=("debian" "ubuntu" "centos|red hat|kernel|oracle linux|alma|rocky" "'amazon linux'" "fedora" "arch")
 RELEASE=("Debian" "Ubuntu" "CentOS" "CentOS" "Fedora" "Arch")
 PACKAGE_UPDATE=("! apt-get update && apt-get --fix-broken install -y && apt-get update" "apt-get update" "yum -y update" "yum -y update" "yum -y update" "pacman -Sy")
@@ -23,6 +25,8 @@ for ((int = 0; int < ${#REGEX[@]}; int++)); do
         [[ -n $SYSTEM ]] && break
     fi
 done
+
+[[ $EUID -ne 0 ]] && echo -e "${RED}请使用 root 用户运行本脚本！${PLAIN}" && exit 1
 
 boinc() {
     _green "\n Install docker.\n "
