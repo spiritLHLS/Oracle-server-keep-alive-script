@@ -16,7 +16,7 @@ function calculate_primes() {
   done
 }
 
-size=350
+size=450
 interval=10
 MIN_SIZE=200
 MIN_INTERVAL=2
