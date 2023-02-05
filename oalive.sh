@@ -170,6 +170,11 @@ main() {
       _yellow "Installing fallocate"
       ${PACKAGE_INSTALL[int]} fallocate
     fi
+    if ! command -v nproc > /dev/null 2>&1; then
+      echo "nproc not found, installing..."
+      _yellow "Installing nproc"
+      ${PACKAGE_INSTALL[int]} coreutils
+    fi
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
