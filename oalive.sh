@@ -62,7 +62,7 @@ calculate() {
     mv cpu-limit.service /etc/systemd/system/cpu-limit.service
     line_number=$(grep -n "Restart=always" /etc/systemd/system/cpu-limit.service | cut -d: -f1)
     total_cores=$(grep -c ^processor /proc/cpuinfo)
-    cpu_limit=$(echo "($total_cores * 11 / 100 + 0.5) / 1" | bc)
+    cpu_limit=$(echo "($total_cores * 12 / 100 + 0.5) / 1" | bc)
     if [ "$cpu_limit" -lt 25 ]; then
       cpu_limit=25
     fi
