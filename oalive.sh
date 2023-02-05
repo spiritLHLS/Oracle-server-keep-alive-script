@@ -129,6 +129,8 @@ uninstall(){
         systemctl disable cpu-limit.service
         rm /etc/systemd/system/cpu-limit.service
         rm /usr/local/bin/cpu-limit.sh
+	kill $(pgrep dd) &> /dev/null  
+	kill $(pgrep cpu-limit.sh) &> /dev/null  
     fi
     _yellow "已卸载CPU占用 - The cpu limit script has been uninstalled successfully."
     if [ -f "/etc/systemd/system/memory-limit.service" ]; then
