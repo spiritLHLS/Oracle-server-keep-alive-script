@@ -91,7 +91,7 @@ bandwidth(){
     if ! command -v speedtest-cli > /dev/null 2>&1; then
       echo "speedtest-cli not found, installing..."
       _yellow "Installing speedtest-cli"
-	  ${PACKAGE_INSTALL[int]} speedtest-cli
+      ${PACKAGE_INSTALL[int]} speedtest-cli
     fi
     curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
     mv bandwidth_occupier.sh /usr/local/bin/bandwidth_occupier.sh
