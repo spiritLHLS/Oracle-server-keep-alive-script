@@ -188,7 +188,7 @@ main() {
         1)
             echo "选择你需要占用CPU时使用的程序:"
             echo "1. 本机素数计算模拟占用(20%~25%) [推荐]"
-            echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc)"
+            echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc) [不推荐]"
 	    echo "3. 不限制"
             reading "你的选择：" cpu_option
             if [ $cpu_option == 2 ]; then
