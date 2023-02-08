@@ -12,7 +12,7 @@
 
 因为更新有延迟需要等待CDN加载最新脚本，务必使用最新脚本以避免某些历史bug未修复
 
-请留意脚本当前更新日期：2023.02.08 - 目前CDN未加载最新脚本，如若加载成功会在此留言告知
+请留意脚本当前更新日期：2023.02.08
 
 ### 开发完毕，测试中，有问题请在issues中反馈
 
@@ -23,7 +23,7 @@
 最后会询问是否需要带宽占用的参数自定义，这时候默认选项就是```n```，回车就使用默认配置，输入```y```再回车则需要按照提示自定义参数
 
 ```
-curl -L https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh -o oalive.sh && chmod +x oalive.sh && bash oalive.sh
+curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/oalive.sh -o oalive.sh && chmod +x oalive.sh && bash oalive.sh
 ```
 
 或
@@ -35,7 +35,7 @@ bash oalive.sh
 或
 
 ```
-bash <(wget -qO- --no-check-certificate https://raw.githubusercontent.com/spiritLHLS/Oracle-server-keep-alive-script/main/oalive.sh)
+bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/oalive.sh)
 ```
 
 ### 说明
