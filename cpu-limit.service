@@ -5,7 +5,7 @@ Description=Keep CPU usage
 User=root
 ExecStartPre=-/bin/bash -c 'kill $(ps -efA | grep cpu-limit.sh | awk "{print $2}")'
 ExecStart=/bin/bash /usr/local/bin/cpu-limit.sh
-Restart=always
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
