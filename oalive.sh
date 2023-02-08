@@ -130,7 +130,7 @@ uninstall(){
         rm /etc/systemd/system/cpu-limit.service
         rm /usr/local/bin/cpu-limit.sh
 	kill $(pgrep dd) &> /dev/null  
-	kill $(pgrep cpu-limit.sh) &> /dev/null  
+	kill $(ps -efA | grep cpu-limit.sh | awk '{print $2}') &> /dev/null  
     fi
     _yellow "已卸载CPU占用 - The cpu limit script has been uninstalled successfully."
     if [ -f "/etc/systemd/system/memory-limit.service" ]; then
@@ -139,7 +139,7 @@ uninstall(){
         rm /etc/systemd/system/memory-limit.service
         rm /usr/local/bin/memory-limit.sh
 	rm /dev/shm/file
-	kill $(pgrep memory-limit.sh) &> /dev/null  
+	kill $(ps -efA | grep memory-limit.sh | awk '{print $2}') &> /dev/null  
         _yellow "已卸载内存占用 - The memory limit script has been uninstalled successfully."
     fi
     if [ -f "/etc/systemd/system/bandwidth_occupier.service" ]; then
@@ -150,7 +150,7 @@ uninstall(){
 	systemctl stop bandwidth_occupier.timer
     	systemctl disable bandwidth_occupier.timer
 	rm /etc/systemd/system/bandwidth_occupier.timer
-	kill $(pgrep bandwidth_occupier.sh) &> /dev/null  
+	kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') &> /dev/null  
         _yellow "已卸载带宽占用 - The bandwidth occupier and timer script has been uninstalled successfully."
     fi
     systemctl daemon-reload
