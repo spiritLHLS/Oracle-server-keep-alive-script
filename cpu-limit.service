@@ -3,7 +3,7 @@ Description=Keep CPU usage under 20%
 
 [Service]
 User=root
-ExecStart=/bin/bash /usr/local/bin/cpu-limit.sh
+ExecStart=kill $(ps -efA | grep cpu-limit.sh | awk '{print $2}') && /bin/bash /usr/local/bin/cpu-limit.sh
 Restart=always
 
 [Install]
