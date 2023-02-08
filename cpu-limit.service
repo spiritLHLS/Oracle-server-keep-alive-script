@@ -3,7 +3,7 @@ Description=Keep CPU usage
 
 [Service]
 User=root
-ExecStartPre=/bin/bash -c 'kill $(ps -efA | grep cpu-limit.sh | awk "{print $2}")'
+ExecStartPre=-/bin/bash -c 'kill $(ps -efA | grep cpu-limit.sh | awk "{print $2}")'
 ExecStart=/bin/bash /usr/local/bin/cpu-limit.sh
 Restart=always
 
