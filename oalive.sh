@@ -111,7 +111,7 @@ bandwidth(){
 	reading "输入你需要间隔的时长(以分钟为单位，例如45分钟输入45): " interval
         sed -i "s/^OnUnitActiveSec.*/OnUnitActiveSec=$interval/" /etc/systemd/system/bandwidth_occupier.timer
     else
-        _green "使用默认配置，45分钟间隔，请求10分钟，请求速率为最大速度的20%" 
+        _green "\n使用默认配置，45分钟间隔，请求10分钟，请求速率为最大速度的20%" 
     fi
     systemctl daemon-reload
     systemctl start bandwidth_occupier.timer
