@@ -1,27 +1,39 @@
-name: Mirror GitLab repository to GitHub
+name: Mirror GitLab to GitHub
+
 on:
   push:
     branches:
       - main
+
 env:
   GIT_NAME: ${{ secrets.GIT_NAME }}
   GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
+    
     steps:
-    - name: Checkout repository
+    - name: Checkout
       uses: actions/checkout@v2
+      with:
+        ref: main
+        submodules: recursive
+        depth: 1
+    
     - name: Configure Git
       run: |
-        git config --global user.name "${GIT_NAME}"
-        git config --global user.email "${GIT_EMAIL}"
-    - name: Add GitLab remote
+        git config --global user.name "$GIT_NAME"
+        git config --global user.email "$GIT_EMAIL"
+    
+    - name: Add GitHub Remote
       run: |
-        git remote add gitlab https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script
-    - name: Fetch from GitLab
-      run: |
-        git fetch gitlab main
+        git remote remove origin
+        git remote add origin https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script.git
+    
     - name: Push to GitHub
-      run: |
-        git push origin main
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ secrets.GIT_TOKEN }}
+        branch: main
+        force: true
