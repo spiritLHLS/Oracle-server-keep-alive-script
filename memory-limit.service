@@ -1,5 +1,5 @@
 [Unit]
-Description=Keep memory usage under 15%
+Description=Keep memory usage
 
 [Service]
 User=root
