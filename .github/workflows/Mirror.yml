@@ -14,12 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        ref: main
-        submodules: recursive
-        depth: 1
+    - name: Fetch GitLab repository
+      run: |
+        git clone https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script.git
+        cd Oracle-server-keep-alive-script
+        git checkout main
     
     - name: Configure Git
       run: |
@@ -29,7 +28,7 @@ jobs:
     - name: Add GitHub Remote
       run: |
         git remote remove origin
-        git remote add origin https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script.git
+        git remote add origin https://github.com/spiritLHLS/Oracle-server-keep-alive-script
     
     - name: Push to GitHub
       uses: ad-m/github-push-action@v0.6.0
