@@ -28,7 +28,7 @@ jobs:
     - name: Add GitHub Remote
       run: |
         git remote remove origin
-        git remote add origin https://github.com/spiritLHLS/Oracle-server-keep-alive-script
+        git remote add origin https://github.com/spiritLHLS/Oracle-server-keep-alive-script.git
     
     - name: Push to GitHub
       uses: ad-m/github-push-action@v0.6.0
