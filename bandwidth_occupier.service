@@ -5,7 +5,6 @@ Description=Bandwidth Occupier Service
 User=root
 ExecStartPre=-/bin/bash -c 'kill $(ps -efA | grep bandwidth_occupier.sh | awk "{print $2}")'
 ExecStart=/bin/bash /usr/local/bin/bandwidth_occupier.sh
-Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
