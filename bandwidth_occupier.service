@@ -2,7 +2,8 @@
 Description=Bandwidth Occupier Service
 
 [Service]
-ExecStart=kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') && /bin/bash /usr/local/bin/bandwidth_occupier.sh
+ExecStartPre=-/bin/bash -c 'kill $(ps -efA | grep bandwidth_occupier.sh | awk "{print $2}")'
+ExecStart=/bin/bash /usr/local/bin/bandwidth_occupier.sh
 
 [Install]
 WantedBy=multi-user.target
