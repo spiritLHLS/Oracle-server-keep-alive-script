@@ -3,7 +3,8 @@ Description=Keep memory usage under 15%
 
 [Service]
 User=root
-ExecStart=kill $(ps -efA | grep memory-limit.sh | awk '{print $2}') && /bin/bash /usr/local/bin/memory-limit.sh
+ExecStartPre=-/bin/bash -c 'kill $(ps -efA | grep memory-limit.sh | awk "{print $2}")'
+ExecStart=/bin/bash /usr/local/bin/memory-limit.sh
 Restart=always
 
 [Install]
