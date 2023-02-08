@@ -1,5 +1,5 @@
 [Unit]
-Description=Keep CPU usage under 20%
+Description=Keep CPU usage
 
 [Service]
 User=root
