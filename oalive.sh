@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.11"
+ver="2023.02.11.22.30"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -27,6 +27,28 @@ for ((int = 0; int < ${#REGEX[@]}; int++)); do
 done
 
 [[ $EUID -ne 0 ]] && echo -e "${RED}请使用 root 用户运行本脚本！${PLAIN}" && exit 1
+
+checkver(){
+  curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/oalive.sh -o oalive1.sh && chmod +x oalive1.sh
+  downloaded_version=$(grep "ver=" oalive1.sh | cut -d '"' -f2)
+  if [ "$ver" != "$downloaded_version" ]; then
+    _yellow "更新脚本从 $ver 到 $downloaded_version"
+    mv oalive1.sh "$0"
+    uninstall
+    _yellow "5秒后请重新设置占用，已自动卸载原有占用"
+    sleep 5
+    bash oalive.sh
+  else
+    _green "本脚本已是最新脚本无需更新"
+    rm oalive1.sh
+  fi
+}
+
+checkupdate(){
+	    _yellow "Updating package management sources"
+		${PACKAGE_UPDATE[int]} > /dev/null 2>&1
+        ${PACKAGE_INSTALL[int]} dmidecode > /dev/null 2>&1
+}
 
 boinc() {
     _green "\n Install docker.\n "
@@ -97,6 +119,10 @@ bandwidth(){
     if ! command -v speedtest-cli > /dev/null 2>&1; then
       echo "speedtest-cli not found, installing..."
       _yellow "Installing speedtest-cli"
+      rm /etc/apt/sources.list.d/speedtest.list
+      ${PACKAGE_REMOVE[int]} speedtest
+      ${PACKAGE_REMOVE[int]} speedtest-cli
+      checkupdate
       ${PACKAGE_INSTALL[int]} speedtest-cli
     fi
     curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
@@ -165,6 +191,7 @@ uninstall(){
 main() {
     _green "当前脚本更新时间(请注意比对仓库说明)： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
+    checkupdate
     if ! command -v wget > /dev/null 2>&1; then
       echo "wget not found, installing..."
       _yellow "Installing wget"
@@ -188,7 +215,8 @@ main() {
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
-    echo "3. 退出程序"
+    echo "3. 一键更新脚本"
+    echo "4. 退出程序"
     reading "你的选择：" option
     case $option in
         1)
@@ -216,6 +244,9 @@ main() {
         2)
             uninstall
             exit 0
+            ;;
+        3)
+            checkver
             ;;
         *)
             echo "无效选项，退出程序"
