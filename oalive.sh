@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.11.22.37"
+ver="2023.02.11.22.40"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -29,10 +29,10 @@ done
 [[ $EUID -ne 0 ]] && echo -e "${RED}请使用 root 用户运行本脚本！${PLAIN}" && exit 1
 
 checkver(){
-  running_version=$(grep "ver=" "$0" | cut -d '"' -f2 | cut -d '.' -f1-4)
+  running_version=$(grep "ver=\"[0-9]\{4\}\.[0-9]\{2\}\.[0-9]\{2\}\.[0-9]\{2\}\"" "$0" | awk -F '"' '{print $2}')
   curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/oalive.sh -o oalive1.sh && chmod +x oalive1.sh
-  downloaded_version=$(grep "ver=" oalive1.sh | cut -d '"' -f2 | cut -d '.' -f1-4)
-  if [ "$ver" != "$downloaded_version" ]; then
+  downloaded_version=$(grep "ver=\"[0-9]\{4\}\.[0-9]\{2\}\.[0-9]\{2\}\.[0-9]\{2\}\"" oalive1.sh | awk -F '"' '{print $2}')
+  if [ "$running_version" != "$downloaded_version" ]; then
     _yellow "更新脚本从 $ver 到 $downloaded_version"
     mv oalive1.sh "$0"
     uninstall
