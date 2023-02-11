@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.08"
+ver="2023.02.11"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -61,9 +61,15 @@ calculate() {
     curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/cpu-limit.service -o cpu-limit.service && chmod +x cpu-limit.service
     mv cpu-limit.service /etc/systemd/system/cpu-limit.service
     line_number=7
-    total_cores=$(grep -c ^processor /proc/cpuinfo)
-    cpu_limit=$(echo "($total_cores * 12 / 100 + 0.5) / 1" | bc)
-    if [ "$cpu_limit" -lt 25 ]; then
+    total_cores=0
+    if [ -f "/proc/cpuinfo" ]; then
+      total_cores=$(grep -c ^processor /proc/cpuinfo)
+    else
+      total_cores=$(nproc)
+    fi
+    if [ "$total_cores" == "2" ] || [ "$total_cores" == "3" ] || [ "$total_cores" == "4" ]; then
+      cpu_limit=$(echo "$total_cores * 15" | bc)
+    else
       cpu_limit=25
     fi
     sed -i "${line_number}a CPUQuota=${cpu_limit}%" /etc/systemd/system/cpu-limit.service
