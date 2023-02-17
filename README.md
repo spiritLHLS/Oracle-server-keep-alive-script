@@ -55,6 +55,11 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 - 可选择一键卸载所有占用服务，卸载会将所有脚本和服务卸载，包括任务、守护进程和开机自启的设置
 - 新增一键检查更新，更新仅限于脚本更新，更新后请重新设置占用服务
 
+
+### 待开发内容
+
+使用docker整合所有脚本方便使用
+
 ### 友链
 
 VPS融合怪测评脚本
