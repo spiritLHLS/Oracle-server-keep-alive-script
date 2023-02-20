@@ -2,6 +2,20 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
+pid_file=/tmp/memory-limit.pid
+if [ -e "${pid_file}" ]; then
+  # 如果 PID 文件存在，则读取其中的 PID
+  pid=$(cat "${pid_file}")
+  # 检查该 PID 是否对应一个正在运行的进程
+  if ps -p "${pid}" > /dev/null; then
+    echo "Error: Another instance of memory-limit.sh is already running with PID ${pid}"
+    exit 1
+  fi
+  # 如果 PID 文件存在，但对应的进程已经停止运行，删除 PID 文件
+  rm "${pid_file}"
+fi
+echo $$ > "${pid_file}"
+
 while true
 do
   mem_total=$(free | awk '/Mem/ {print $2}')
@@ -19,4 +33,4 @@ do
   fi
 done
 
-
+rm "${pid_file}"
