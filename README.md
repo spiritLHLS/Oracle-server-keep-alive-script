@@ -14,7 +14,7 @@
 
 为避免GitHub的CDN抽风加载不了新内容，所有新更新已使用[Gitlab仓库](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script)，本仓库仅作存档
 
-请留意脚本当前更新日期：2023.02.11.22.48
+请留意脚本当前更新日期：2023.02.20.20.52
 
 ### 开发完毕，测试中，有问题请在issues中反馈
 
