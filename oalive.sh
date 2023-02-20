@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.11.22.48"
+ver="2023.02.20.20.52"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -162,9 +162,10 @@ uninstall(){
         systemctl disable cpu-limit.service
         rm /etc/systemd/system/cpu-limit.service
         rm /usr/local/bin/cpu-limit.sh
-	kill $(pgrep dd) &> /dev/null  
-	kill $(ps -efA | grep cpu-limit.sh | awk '{print $2}') &> /dev/null  
+	      kill $(pgrep dd) &> /dev/null  
+	      kill $(ps -efA | grep cpu-limit.sh | awk '{print $2}') &> /dev/null  
     fi
+    rm -rf /tmp/cpu-limit.pid &> /dev/null  
     _yellow "已卸载CPU占用 - The cpu limit script has been uninstalled successfully."
     if [ -f "/etc/systemd/system/memory-limit.service" ]; then
         systemctl stop memory-limit.service
