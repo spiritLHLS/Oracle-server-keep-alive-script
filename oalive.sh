@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.20.20.52"
+ver="2023.02.20.21.04"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -172,8 +172,9 @@ uninstall(){
         systemctl disable memory-limit.service
         rm /etc/systemd/system/memory-limit.service
         rm /usr/local/bin/memory-limit.sh
-	rm /dev/shm/file
-	kill $(ps -efA | grep memory-limit.sh | awk '{print $2}') &> /dev/null  
+	      rm /dev/shm/file
+	      kill $(ps -efA | grep memory-limit.sh | awk '{print $2}') &> /dev/null  
+        rm -rf /tmp/memory-limit.pid &> /dev/null  
         _yellow "已卸载内存占用 - The memory limit script has been uninstalled successfully."
     fi
     if [ -f "/etc/systemd/system/bandwidth_occupier.service" ]; then
@@ -181,10 +182,11 @@ uninstall(){
         systemctl disable bandwidth_occupier
         rm /etc/systemd/system/bandwidth_occupier.service
         rm /usr/local/bin/bandwidth_occupier.sh
-	systemctl stop bandwidth_occupier.timer
-    	systemctl disable bandwidth_occupier.timer
-	rm /etc/systemd/system/bandwidth_occupier.timer
-	kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') &> /dev/null  
+	      systemctl stop bandwidth_occupier.timer
+    	  systemctl disable bandwidth_occupier.timer
+	      rm /etc/systemd/system/bandwidth_occupier.timer
+	      kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') &> /dev/null  
+        rm -rf /tmp/bandwidth_occupier.pid &> /dev/null 
         _yellow "已卸载带宽占用 - The bandwidth occupier and timer script has been uninstalled successfully."
     fi
     systemctl daemon-reload
