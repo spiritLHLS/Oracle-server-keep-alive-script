@@ -14,7 +14,7 @@
 
 为避免GitHub的CDN抽风加载不了新内容，所有新更新已使用[Gitlab仓库](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script)，本仓库仅作存档
 
-请留意脚本当前更新日期：2023.02.20.20.52
+请留意脚本当前更新日期：2023.02.20.21.04
 
 ### 开发完毕，测试中，有问题请在issues中反馈
 
@@ -54,7 +54,7 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 - 占用过程中使用守护进程和开机自启服务，保证占用任务持续且有效
 - 可选择一键卸载所有占用服务，卸载会将所有脚本和服务卸载，包括任务、守护进程和开机自启的设置
 - 新增一键检查更新，更新仅限于脚本更新，更新后请重新设置占用服务
-
+- 对所有进程执行增加唯一性检测，避免重复运行
 
 ### 待开发内容
 
