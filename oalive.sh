@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.20.21.04"
+ver="2023.02.22.17.53"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -225,7 +225,7 @@ main() {
     case $option in
         1)
             echo "选择你需要占用CPU时使用的程序:"
-            echo "1. 本机素数计算模拟占用(20%~25%) [推荐]"
+            echo "1. 本机DD模拟占用(20%~25%) [推荐]"
             echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc) [不推荐]"
 	    echo "3. 不限制"
             reading "你的选择：" cpu_option
