@@ -21,7 +21,7 @@ selected_url=""
 while [[ -z "$selected_url" ]]; do
   rand=$(date +%s)
   url=${urls[rand % ${#urls[@]}]}
-  if wget --spider "$url" 2>/dev/null; then
+  if timeout 5s wget --tries=3 --spider "$url" 2>/dev/null; then
     selected_url=$url
   fi
 done
