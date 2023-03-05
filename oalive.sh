@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.02.22.17.53"
+ver="2023.03.05.20.34"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -124,6 +124,9 @@ bandwidth(){
       ${PACKAGE_REMOVE[int]} speedtest
       ${PACKAGE_REMOVE[int]} speedtest-cli
       checkupdate
+      if [ $SYSTEM = "CentOS" ]; then
+        ${PACKAGE_INSTALL[int]} epel-release
+      fi
       ${PACKAGE_INSTALL[int]} speedtest-cli
     fi
     curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
