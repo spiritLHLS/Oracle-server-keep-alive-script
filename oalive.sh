@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.03.05.20.34"
+ver="2023.03.06.12.44"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -120,14 +120,34 @@ bandwidth(){
     if ! command -v speedtest-cli > /dev/null 2>&1; then
       echo "speedtest-cli not found, installing..."
       _yellow "Installing speedtest-cli"
-      rm /etc/apt/sources.list.d/speedtest.list
-      ${PACKAGE_REMOVE[int]} speedtest
-      ${PACKAGE_REMOVE[int]} speedtest-cli
+      rm /etc/apt/sources.list.d/speedtest.list >/dev/null 2>&1
+      ${PACKAGE_REMOVE[int]} speedtest > /dev/null 2>&1
+      ${PACKAGE_REMOVE[int]} speedtest-cli > /dev/null 2>&1
       checkupdate
-      if [ $SYSTEM = "CentOS" ]; then
-        ${PACKAGE_INSTALL[int]} epel-release
-      fi
       ${PACKAGE_INSTALL[int]} speedtest-cli
+    fi
+    if ! command -v speedtest-cli > /dev/null 2>&1; then
+      ARCH=$(uname -m)
+      if [[ $ARCH == "arm64" ]]; then
+        FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_arm64.tar.gz"
+      elif [[ $ARCH == "i386" ]]; then
+        FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_i386.tar.gz"
+      elif [[ $ARCH == "x86_64" ]]; then
+        FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_x86_64.tar.gz"
+      else
+        _red "不支持该架构：$ARCH"
+        exit 1
+      fi
+      wget -q -O speedtest-go_1.5.2_Linux.tar.gz $FILE_URL
+      if ! command -v tar > /dev/null 2>&1; then
+        yum install -y tar
+      fi
+      chmod 777 speedtest-go_1.5.2_Linux.tar.gz
+      tar -xvf speedtest-go_1.5.2_Linux.tar.gz
+      chmod 777 speedtest-go
+      mv speedtest-go /usr/local/bin/ 
+      rm -rf README.md LICENSE > /dev/null 2>&1
+      rm -rf speedtest-go_1.5.2_Linux.tar.gz > /dev/null 2>&1
     fi
     curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
     mv bandwidth_occupier.sh /usr/local/bin/bandwidth_occupier.sh
@@ -188,6 +208,7 @@ uninstall(){
 	      systemctl stop bandwidth_occupier.timer
     	  systemctl disable bandwidth_occupier.timer
 	      rm /etc/systemd/system/bandwidth_occupier.timer
+        rm -rf /usr/local/bin/speedtest-go &> /dev/null  
 	      kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') &> /dev/null  
         rm -rf /tmp/bandwidth_occupier.pid &> /dev/null 
         _yellow "已卸载带宽占用 - The bandwidth occupier and timer script has been uninstalled successfully."
@@ -199,6 +220,9 @@ main() {
     _green "当前脚本更新时间(请注意比对仓库说明)： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
     checkupdate
+    if [ $SYSTEM = "CentOS" ]; then
+      ${PACKAGE_INSTALL[int]} epel-release
+    fi
     if ! command -v wget > /dev/null 2>&1; then
       echo "wget not found, installing..."
       _yellow "Installing wget"
