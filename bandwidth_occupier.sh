@@ -25,7 +25,11 @@ while [[ -z "$selected_url" ]]; do
     selected_url=$url
   fi
 done
-bandwidth=$(speedtest-cli --simple | awk '/^Download/ {print $2}')
+if ! command -v speedtest-cli > /dev/null 2>&1; then
+  bandwidth=$(/usr/local/bin/speedtest-go | awk '/^Download/ {print $2}' | head -2 | tail -1)
+else
+  bandwidth=$(speedtest-cli --simple | awk '/^Download/ {print $2}')
+fi
 rate=$(echo "($bandwidth * 0.25)/1" | bc)
 timeout 10m wget $selected_url --limit-rate=$rate -O /dev/null &
 rm "${pid_file}"
