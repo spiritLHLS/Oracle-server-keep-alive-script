@@ -13,6 +13,7 @@ if [ -e "${pid_file}" ]; then
   fi
   # 如果 PID 文件存在，但对应的进程已经停止运行，删除 PID 文件
   rm "${pid_file}"
+  rm /dev/shm/file
 fi
 echo $$ > "${pid_file}"
 
