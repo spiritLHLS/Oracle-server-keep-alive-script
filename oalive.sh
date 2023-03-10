@@ -47,8 +47,7 @@ checkver(){
 
 checkupdate(){
 	    _yellow "Updating package management sources"
-		${PACKAGE_UPDATE[int]} > /dev/null 2>&1
-        ${PACKAGE_INSTALL[int]} dmidecode > /dev/null 2>&1
+		  ${PACKAGE_UPDATE[int]} > /dev/null 2>&1
 }
 
 boinc() {
@@ -128,7 +127,7 @@ bandwidth(){
     fi
     if ! command -v speedtest-cli > /dev/null 2>&1; then
       ARCH=$(uname -m)
-      if [[ $ARCH == "arm64" ]]; then
+      if [[ "$ARCH" == "armv7l" || "$ARCH" == "armv8" || "$ARCH" == "armv8l" || "$ARCH" == "aarch64" ]]; then
         FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_arm64.tar.gz"
       elif [[ $ARCH == "i386" ]]; then
         FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_i386.tar.gz"
@@ -216,33 +215,36 @@ uninstall(){
     systemctl daemon-reload
 }
 
+check_and_install() {
+  local command_name=$1
+  local package_name=$2
+
+  if ! command -v $command_name > /dev/null 2>&1; then
+    echo "$command_name not found, installing..."
+    _yellow "Installing $package_name"
+    ${PACKAGE_INSTALL[int]} $package_name
+  fi
+}
+  
+pre_check() {
+  reading "是否需要更新软件包管理器？y/[n]：" apt_option
+  if [ "$apt_option" == y ] || [ "$apt_option" == Y ]; then
+    checkupdate
+  fi
+  if [[ "$SYSTEM" == "CentOS" ]]; then
+    ${PACKAGE_INSTALL[int]} epel-release
+  fi
+  ${PACKAGE_INSTALL[int]} dmidecode > /dev/null 2>&1
+  check_and_install wget wget
+  check_and_install bc bc
+  check_and_install fallocate util-linux
+  check_and_install nproc coreutils
+}
+
 main() {
     _green "当前脚本更新时间(请注意比对仓库说明)： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
-    checkupdate
-    if [ $SYSTEM = "CentOS" ]; then
-      ${PACKAGE_INSTALL[int]} epel-release
-    fi
-    if ! command -v wget > /dev/null 2>&1; then
-      echo "wget not found, installing..."
-      _yellow "Installing wget"
-      ${PACKAGE_INSTALL[int]} wget
-    fi
-    if ! command -v bc > /dev/null 2>&1; then
-      echo "bc not found, installing..."
-      _yellow "Installing bc"
-    	${PACKAGE_INSTALL[int]} bc
-    fi
-    if ! command -v fallocate > /dev/null 2>&1; then
-      echo "fallocate not found, installing..."
-      _yellow "Installing fallocate"
-      ${PACKAGE_INSTALL[int]} fallocate
-    fi
-    if ! command -v nproc > /dev/null 2>&1; then
-      echo "nproc not found, installing..."
-      _yellow "Installing nproc"
-      ${PACKAGE_INSTALL[int]} coreutils
-    fi
+    pre_check
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
@@ -254,21 +256,21 @@ main() {
             echo "选择你需要占用CPU时使用的程序:"
             echo "1. 本机DD模拟占用(20%~25%) [推荐]"
             echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc) [不推荐]"
-	    echo "3. 不限制"
+	          echo "3. 不限制"
             reading "你的选择：" cpu_option
             if [ $cpu_option == 2 ]; then
                 boinc
-	    elif [ $cpu_option == 3 ]; then
-    		echo ""
+	          elif [ $cpu_option == 3 ]; then
+    		        echo ""
             else
                 calculate
             fi
             reading "需要限制内存吗? ([y]/n): " memory_confirm
-            if [ "$memory_confirm" != "n" ]; then
+            if [ "$memory_confirm" != "n" ] && [ "$memory_confirm" != "N" ]; then
                 memory
             fi
             reading "需要限制带宽吗? ([y]/n): " bandwidth_confirm
-            if [ "$bandwidth_confirm" != "n" ]; then
+            if [ "$bandwidth_confirm" != "n" ] && [ "$bandwidth_confirm" != "N" ]; then
                 bandwidth
             fi
             ;;
