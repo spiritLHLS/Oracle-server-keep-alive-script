@@ -97,8 +97,14 @@ calculate() {
     sed -i "${line_number}a CPUQuota=${cpu_limit}%" /etc/systemd/system/cpu-limit.service
     systemctl daemon-reload
     systemctl enable cpu-limit.service
-    systemctl start cpu-limit.service
-    _green "CPU限制安装成功 脚本路径: /usr/local/bin/cpu-limit.sh"
+    if systemctl start cpu-limit.service ; then
+      _green "CPU限制安装成功 脚本路径: /usr/local/bin/cpu-limit.sh"
+    else
+      restorecon /etc/systemd/system/cpu-limit.service
+      systemctl enable cpu-limit.service
+      systemctl start cpu-limit.service
+      _green "CPU限制安装成功 脚本路径: /usr/local/bin/cpu-limit.sh"
+    fi
     _green "The CPU limit script has been installed at /usr/local/bin/cpu-limit.sh"
 }
 
@@ -110,8 +116,14 @@ memory(){
     mv memory-limit.service /etc/systemd/system/memory-limit.service
     systemctl daemon-reload
     systemctl enable memory-limit.service
-    systemctl start memory-limit.service
-    _green "内存限制安装成功 脚本路径: /usr/local/bin/memory-limit.sh" 
+    if systemctl start memory-limit.service ; then
+      _green "内存限制安装成功 脚本路径: /usr/local/bin/memory-limit.sh" 
+    else
+      restorecon /etc/systemd/system/memory-limit.service
+      systemctl enable memory-limit.service
+      systemctl start memory-limit.service
+      _green "内存限制安装成功 脚本路径: /usr/local/bin/memory-limit.sh" 
+    fi
     _green "The memory limit script has been installed at /usr/local/bin/memory-limit.sh"
 }
 
@@ -169,9 +181,16 @@ bandwidth(){
         _green "\n使用默认配置，45分钟间隔，请求10分钟，请求速率为最大速度的20%" 
     fi
     systemctl daemon-reload
-    systemctl start bandwidth_occupier.timer
     systemctl enable bandwidth_occupier.timer
-    _green "带宽限制安装成功 脚本路径: /usr/local/bin/bandwidth_occupier.sh"
+    if systemctl start bandwidth_occupier.timer ; then
+      _green "带宽限制安装成功 脚本路径: /usr/local/bin/bandwidth_occupier.sh"
+    else
+      restorecon /etc/systemd/system/bandwidth_occupier.timer
+      restorecon /etc/systemd/system/bandwidth_occupier.service
+      systemctl enable bandwidth_occupier.timer
+      systemctl start bandwidth_occupier.timer
+      _green "带宽限制安装成功 脚本路径: /usr/local/bin/bandwidth_occupier.sh"
+    fi
     _green "The bandwidth limit script has been installed at /usr/local/bin/bandwidth_occupier.sh"
 }
 
