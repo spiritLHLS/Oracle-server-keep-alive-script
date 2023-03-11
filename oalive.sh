@@ -263,7 +263,6 @@ pre_check() {
 main() {
     _green "当前脚本更新时间(请注意比对仓库说明)： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
-    pre_check
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
@@ -272,6 +271,7 @@ main() {
     reading "你的选择：" option
     case $option in
         1)
+            pre_check
             echo "选择你需要占用CPU时使用的程序:"
             echo "1. 本机DD模拟占用(20%~25%) [推荐]"
             echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc) [不推荐]"
