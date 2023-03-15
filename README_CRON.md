@@ -46,6 +46,8 @@ mv bandwidth_occupier.sh /usr/local/bin/bandwidth_occupier.sh
 
 对应需要安装的```speedtest-cli```或```speedtest-go```自行安装
 
+安装```speedtest-go```的记得执行```mv speedtest-go /usr/local/bin/ ```
+
 运行脚本(也就是你需要定时的命令)
 ```
 bash /usr/local/bin/bandwidth_occupier.sh 
