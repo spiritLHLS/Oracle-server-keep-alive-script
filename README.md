@@ -55,6 +55,8 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 - 一键检查更新，更新仅限于脚本更新，**更新后请重新设置占用服务**
 - 对所有进程执行增加唯一性检测(PID文件判断)，避免重复运行
 
+如若不希望一键的，希望自定义设置时间的，请查看[README_CRON.md](https://github.com/spiritLHLS/Oracle-server-keep-alive-script/blob/main/README_CRON.md)自行设置定时任务
+
 ### 待开发内容
 
 使用docker整合所有脚本，方便使用
