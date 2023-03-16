@@ -27,14 +27,19 @@ kill $(ps -efA | grep cpu-limit.sh | awk '{print $2}') && kill -9 $(cat /tmp/cpu
 #### 内存
 
 内存占用
+
+内存以MB计算的大小，修改xxxxx为对应数目
+
 ```
-mkdir /tmp/memory && mount -t tmpfs -o size=3096M tmpfs /tmp/memory && dd if=/dev/zero of=/tmp/memory/block
+mkdir /tmp/memory && mount -t tmpfs -o size=xxxxxM tmpfs /tmp/memory && dd if=/dev/zero of=/tmp/memory/block
 ```
 
 内存释放
 ```
 rm /tmp/memory/block && umount /tmp/memory && rmdir /tmp/memory
 ```
+
+内存占用实际只有ARM有要求(如果我没理解错的话)
 
 #### 网络占用，跑完自动释放
 
