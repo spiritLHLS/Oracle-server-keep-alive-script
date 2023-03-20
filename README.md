@@ -14,7 +14,7 @@
 
 为避免GitHub的CDN抽风加载不了新内容，所有新更新已使用[Gitlab仓库](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script)，本仓库仅作存档
 
-请留意脚本当前更新日期：2023.03.06.12.44
+请留意脚本当前更新日期：2023.03.20.20.36
 
 ### 基础开发完毕，测试中，有问题请在issues中反馈
 
@@ -47,15 +47,15 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 - CPU占用默认25%最高(核数✖12%如果低于25%时设置，高于25%则按照计算后的比例来)
 - 内存占用设定占用20%总内存，占用300秒休息300秒
 - 内存占用每300秒检测一遍，动态调整增加占用的大小，如果你内存大于20%则不增加占用
-- 带宽占用每45分钟下载一次1G~10G大小的文件进行占用，只下载不保存，下载过程中不会占用硬盘
-- 带宽占用动态调整实际下载带宽/速率，限制下载时长最长10分钟，每次下载前先测试最大可用带宽实时调整为20%带宽下载
-- 带宽占用测试使用speedtest-cli和speedtest-go双重保险
+- 带宽占用每45分钟下载一次1G~10G大小的文件进行占用，只下载不保存，下载过程中会占用硬盘但下载完成后自动释放
+- 带宽占用动态调整实际下载带宽/速率，限制下载时长最长6分钟，每次下载前先测试最大可用带宽实时调整为20%带宽下载
+- 带宽占用测试使用speedtest-cli和speedtest-go双重保险，可自定义设置带宽占用
 - 占用过程中使用守护进程和开机自启服务，保证占用任务持续且有效
 - 可选择一键卸载所有占用服务，卸载会将所有脚本和服务卸载，包括任务、守护进程和开机自启的设置
 - 一键检查更新，更新仅限于脚本更新，**更新后请重新设置占用服务**
 - 对所有进程执行增加唯一性检测(PID文件判断)，避免重复运行
 
-如若不希望一键的，希望自定义设置时间的，请查看[README_CRON.md](https://github.com/spiritLHLS/Oracle-server-keep-alive-script/blob/main/README_CRON.md)自行设置定时任务
+如若不希望一键的，希望自定义设置时间的，请查看[README_CRON.md](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/blob/main/%20README_CRON.md)自行设置定时任务
 
 ### 待开发内容
 
