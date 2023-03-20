@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.03.06.12.44"
+ver="2023.03.20.20.36"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -128,38 +128,6 @@ memory(){
 }
 
 bandwidth(){
-    if ! command -v speedtest-cli > /dev/null 2>&1; then
-      echo "speedtest-cli not found, installing..."
-      _yellow "Installing speedtest-cli"
-      rm /etc/apt/sources.list.d/speedtest.list >/dev/null 2>&1
-      ${PACKAGE_REMOVE[int]} speedtest > /dev/null 2>&1
-      ${PACKAGE_REMOVE[int]} speedtest-cli > /dev/null 2>&1
-      checkupdate
-      ${PACKAGE_INSTALL[int]} speedtest-cli
-    fi
-    if ! command -v speedtest-cli > /dev/null 2>&1; then
-      ARCH=$(uname -m)
-      if [[ "$ARCH" == "armv7l" || "$ARCH" == "armv8" || "$ARCH" == "armv8l" || "$ARCH" == "aarch64" ]]; then
-        FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_arm64.tar.gz"
-      elif [[ $ARCH == "i386" ]]; then
-        FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_i386.tar.gz"
-      elif [[ $ARCH == "x86_64" ]]; then
-        FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_x86_64.tar.gz"
-      else
-        _red "不支持该架构：$ARCH"
-        exit 1
-      fi
-      wget -q -O speedtest-go_1.5.2_Linux.tar.gz $FILE_URL
-      if ! command -v tar > /dev/null 2>&1; then
-        yum install -y tar
-      fi
-      chmod 777 speedtest-go_1.5.2_Linux.tar.gz
-      tar -xvf speedtest-go_1.5.2_Linux.tar.gz
-      chmod 777 speedtest-go
-      mv speedtest-go /usr/local/bin/ 
-      rm -rf README.md LICENSE > /dev/null 2>&1
-      rm -rf speedtest-go_1.5.2_Linux.tar.gz > /dev/null 2>&1
-    fi
     curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/bandwidth_occupier.sh -o bandwidth_occupier.sh && chmod +x bandwidth_occupier.sh
     mv bandwidth_occupier.sh /usr/local/bin/bandwidth_occupier.sh
     chmod +x /usr/local/bin/bandwidth_occupier.sh
@@ -169,16 +137,49 @@ bandwidth(){
     mv bandwidth_occupier.service /etc/systemd/system/bandwidth_occupier.service
     reading "需要自定义带宽占用的设置吗? (y/[n]) " answer
     if [ "$answer" == "y" ]; then
-        sed -i '/^bandwidth\|^rate/s/^/#/' /usr/local/bin/bandwidth_occupier.sh
+        # sed -i '/^bandwidth\|^rate/s/^/#/' /usr/local/bin/bandwidth_occupier.sh
+        sed -i '28,33s/^/#/' /usr/local/bin/bandwidth_occupier.sh
         reading "输入你需要的带宽大小(以mbps为单位，例如10mbps输入10): " rate_mbps
-	rate=$(( rate_mbps * 1000000 ))
-        reading "输入你需要请求的时长(以分钟为单位，例如10分钟输入10m): " timeout
-	sed -i 's/^timeout/#timeout/' /usr/local/bin/bandwidth_occupier.sh
-        sed -i '$ a\timeout '$timeout' wget $selected_url --limit-rate='$rate' -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
-	reading "输入你需要间隔的时长(以分钟为单位，例如45分钟输入45): " interval
+	      rate=$(( rate_mbps * 1000000 ))
+        reading "输入你需要请求的时长(以分钟为单位，例如10分钟输入10): " timeout
+	      sed -i 's/^timeout/#timeout/' /usr/local/bin/bandwidth_occupier.sh
+        sed -i '34a\timeout '$timeout'm wget $selected_url --limit-rate='$rate' -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
+	      reading "输入你需要间隔的时长(以分钟为单位，例如45分钟输入45): " interval
         sed -i "s/^OnUnitActiveSec.*/OnUnitActiveSec=$interval/" /etc/systemd/system/bandwidth_occupier.timer
     else
-        _green "\n使用默认配置，45分钟间隔，请求10分钟，请求速率为最大速度的20%" 
+        _green "\n使用默认配置，45分钟间隔，请求5分钟，请求速率为最大速度的20%"
+        if ! command -v speedtest-cli > /dev/null 2>&1; then
+          echo "speedtest-cli not found, installing..."
+          _yellow "Installing speedtest-cli"
+          rm /etc/apt/sources.list.d/speedtest.list >/dev/null 2>&1
+          ${PACKAGE_REMOVE[int]} speedtest > /dev/null 2>&1
+          ${PACKAGE_REMOVE[int]} speedtest-cli > /dev/null 2>&1
+          checkupdate
+          ${PACKAGE_INSTALL[int]} speedtest-cli
+        fi
+        if ! command -v speedtest-cli > /dev/null 2>&1; then
+          ARCH=$(uname -m)
+          if [[ "$ARCH" == "armv7l" || "$ARCH" == "armv8" || "$ARCH" == "armv8l" || "$ARCH" == "aarch64" ]]; then
+            FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_arm64.tar.gz"
+          elif [[ $ARCH == "i386" ]]; then
+            FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_i386.tar.gz"
+          elif [[ $ARCH == "x86_64" ]]; then
+            FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_x86_64.tar.gz"
+          else
+            _red "不支持该架构：$ARCH"
+            exit 1
+          fi
+          wget -q -O speedtest-go_1.5.2_Linux.tar.gz $FILE_URL
+          if ! command -v tar > /dev/null 2>&1; then
+            yum install -y tar
+          fi
+          chmod 777 speedtest-go_1.5.2_Linux.tar.gz
+          tar -xvf speedtest-go_1.5.2_Linux.tar.gz
+          chmod 777 speedtest-go
+          mv speedtest-go /usr/local/bin/ 
+          rm -rf README.md LICENSE > /dev/null 2>&1
+          rm -rf speedtest-go_1.5.2_Linux.tar.gz > /dev/null 2>&1
+        fi
     fi
     systemctl daemon-reload
     systemctl enable bandwidth_occupier.timer
@@ -260,9 +261,39 @@ pre_check() {
   check_and_install nproc coreutils
 }
 
+check_service_status() {
+    service_name="$1"
+    if systemctl is-active --quiet "$service_name"; then
+        _blue "$service_name 已设置"
+    else
+        _blue "$service_name 未设置"
+    fi
+}
+
+check_services_status() {
+    check_service_status "cpu-limit.service"
+    check_service_status "memory-limit.service"
+    if [ -e "/usr/local/bin/bandwidth_occupier.sh" ]; then
+        if grep -qE '^\s*#' <(sed -n '28,34p' /usr/local/bin/bandwidth_occupier.sh); then
+            line=$(sed -n '35p' /usr/local/bin/bandwidth_occupier.sh)
+            timeout=$(echo "$line" | awk '{print $2}' | awk -F 'm' '{print $1}')
+            limit_rate=$(echo "$line" | awk -F '--limit-rate=' '{print $2}' | awk '{print $1}')
+            limit_rate_mbps=$(echo "scale=2; $limit_rate/1000000" | bc)
+            on_unit_active_sec=$(grep -oP '^OnUnitActiveSec *= *\K[^ ]+' /etc/systemd/system/bandwidth_occupier.timer)
+            _blue "带宽占用使用配置：每隔 $on_unit_active_sec 分钟占用 $limit_rate_mbps Mbps 速率下载文件 $timeout 分钟"
+        else
+            _blue "带宽占用使用配置：自动检测带宽每隔45分钟占用6分钟以最大带宽的20%速率下载文件"
+        fi
+        _blue "bandwidth_occupier.service 已设置"
+    else
+        _blue "bandwidth_occupier.service 未设置"
+    fi
+}
+
 main() {
     _green "当前脚本更新时间(请注意比对仓库说明)： $ver"
     _green "仓库：https://github.com/spiritLHLS/Oracle-server-keep-alive-script"
+    check_services_status
     echo "选择你的选项:"
     echo "1. 安装保活服务"
     echo "2. 卸载保活服务"
