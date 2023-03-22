@@ -30,6 +30,6 @@ if ! command -v speedtest-cli > /dev/null 2>&1; then
 else
   bandwidth=$(speedtest-cli --simple | awk '/^Download/ {print $2}')
 fi
-rate=$(echo "($bandwidth * 0.20)/1" | bc)
+rate=$(echo "$bandwidth * 1024 * 1024 * 0.20" | bc | awk '{printf "%.0f\n", $1}')
 timeout 6m wget $selected_url --limit-rate=$rate -O /dev/null &
 rm "${pid_file}"
