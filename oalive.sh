@@ -275,7 +275,7 @@ check_services_status() {
     check_service_status "memory-limit.service"
     if [ -e "/usr/local/bin/bandwidth_occupier.sh" ]; then
         if grep -qE '^\s*#' <(sed -n '32,38p' /usr/local/bin/bandwidth_occupier.sh); then
-            line=$(sed -n '35p' /usr/local/bin/bandwidth_occupier.sh)
+            line=$(sed -n '39p' /usr/local/bin/bandwidth_occupier.sh)
             timeout=$(echo "$line" | awk '{print $2}' | awk -F 'm' '{print $1}')
             limit_rate=$(echo "$line" | awk -F '--limit-rate=' '{print $2}' | awk '{print $1}')
             limit_rate_mbps=$(echo "scale=2; $limit_rate/1000000" | bc)
