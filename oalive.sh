@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.03.20.20.36"
+ver="2023.03.25.18.55"
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -138,16 +138,16 @@ bandwidth(){
     reading "需要自定义带宽占用的设置吗? (y/[n]) " answer
     if [ "$answer" == "y" ]; then
         # sed -i '/^bandwidth\|^rate/s/^/#/' /usr/local/bin/bandwidth_occupier.sh
-        sed -i '28,33s/^/#/' /usr/local/bin/bandwidth_occupier.sh
+        sed -i '32,38s/^/#/' /usr/local/bin/bandwidth_occupier.sh
         reading "输入你需要的带宽大小(以mbps为单位，例如10mbps输入10): " rate_mbps
 	      rate=$(( rate_mbps * 1000000 ))
         reading "输入你需要请求的时长(以分钟为单位，例如10分钟输入10): " timeout
 	      sed -i 's/^timeout/#timeout/' /usr/local/bin/bandwidth_occupier.sh
-        sed -i '34a\timeout '$timeout'm wget $selected_url --limit-rate='$rate' -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
+        sed -i '38a\timeout '$timeout'm wget $selected_url --limit-rate='$rate' -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
 	      reading "输入你需要间隔的时长(以分钟为单位，例如45分钟输入45): " interval
         sed -i "s/^OnUnitActiveSec.*/OnUnitActiveSec=$interval/" /etc/systemd/system/bandwidth_occupier.timer
     else
-        _green "\n使用默认配置，45分钟间隔，请求6分钟，请求速率为最大速度的20%"
+        _green "\n使用默认配置，45分钟间隔，请求6分钟，请求速率为最大速度的30%"
         if ! command -v speedtest-cli > /dev/null 2>&1; then
           echo "speedtest-cli not found, installing..."
           _yellow "Installing speedtest-cli"
@@ -274,7 +274,7 @@ check_services_status() {
     check_service_status "cpu-limit.service"
     check_service_status "memory-limit.service"
     if [ -e "/usr/local/bin/bandwidth_occupier.sh" ]; then
-        if grep -qE '^\s*#' <(sed -n '28,34p' /usr/local/bin/bandwidth_occupier.sh); then
+        if grep -qE '^\s*#' <(sed -n '32,38p' /usr/local/bin/bandwidth_occupier.sh); then
             line=$(sed -n '35p' /usr/local/bin/bandwidth_occupier.sh)
             timeout=$(echo "$line" | awk '{print $2}' | awk -F 'm' '{print $1}')
             limit_rate=$(echo "$line" | awk -F '--limit-rate=' '{print $2}' | awk '{print $1}')
@@ -282,7 +282,7 @@ check_services_status() {
             on_unit_active_sec=$(grep -oP '^OnUnitActiveSec *= *\K[^ ]+' /etc/systemd/system/bandwidth_occupier.timer)
             _blue "带宽占用使用配置：每隔 $on_unit_active_sec 分钟占用 $limit_rate_mbps Mbps 速率下载文件 $timeout 分钟"
         else
-            _blue "带宽占用使用配置：自动检测带宽每隔45分钟占用6分钟以最大带宽的20%速率下载文件"
+            _blue "带宽占用使用配置：自动检测带宽每隔45分钟占用6分钟以最大带宽的30%速率下载文件"
         fi
         _blue "bandwidth_occupier.service 已设置"
     else
