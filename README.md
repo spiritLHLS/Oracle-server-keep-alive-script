@@ -14,7 +14,7 @@
 
 为避免GitHub的CDN抽风加载不了新内容，所有新更新已使用[Gitlab仓库](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script)，本仓库仅作存档
 
-请留意脚本当前更新日期：2023.03.20.20.36
+请留意脚本当前更新日期：2023.03.25.18.55
 
 ### 基础开发完毕，测试中，有问题请在issues中反馈
 
@@ -48,7 +48,7 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 - 内存占用设定占用20%总内存，占用300秒休息300秒
 - 内存占用每300秒检测一遍，动态调整增加占用的大小，如果你内存大于20%则不增加占用
 - 带宽占用每45分钟下载一次1G~10G大小的文件进行占用，只下载不保存，下载过程中会占用硬盘但下载完成后自动释放
-- 带宽占用动态调整实际下载带宽/速率，限制下载时长最长6分钟，每次下载前先测试最大可用带宽实时调整为20%带宽下载
+- 带宽占用动态调整实际下载带宽/速率，限制下载时长最长6分钟，每次下载前先测试最大可用带宽实时调整为30%带宽下载
 - 带宽占用测试使用speedtest-cli和speedtest-go双重保险，可自定义设置带宽占用
 - 占用过程中使用守护进程和开机自启服务，保证占用任务持续且有效
 - 可选择一键卸载所有占用服务，卸载会将所有脚本和服务卸载，包括任务、守护进程和开机自启的设置
@@ -70,15 +70,3 @@ https://github.com/spiritLHLS/ecs
 ## Stargazers over time
 
 [![Stargazers over time](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script.svg)](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script)
-
-### SEO
-
-甲骨文保活，甲骨文OCI保活，甲骨文资源占用，甲骨文免费服务器，甲骨文服务器闲置使用必备
-
-资源定期浪费，可用于 Oracle 甲骨文保活
-
-为了应对甲骨文最新回收机制而作的脚本
-
-
-
-
