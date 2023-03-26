@@ -41,7 +41,7 @@ checkver(){
     bash oalive.sh
   else
     _green "本脚本已是最新脚本无需更新"
-    rm oalive1.sh
+    rm -rf oalive1.sh*
   fi
 }
 
@@ -151,7 +151,7 @@ bandwidth(){
         if ! command -v speedtest-cli > /dev/null 2>&1; then
           echo "speedtest-cli not found, installing..."
           _yellow "Installing speedtest-cli"
-          rm /etc/apt/sources.list.d/speedtest.list >/dev/null 2>&1
+          rm -rf /etc/apt/sources.list.d/speedtest.list >/dev/null 2>&1
           ${PACKAGE_REMOVE[int]} speedtest > /dev/null 2>&1
           ${PACKAGE_REMOVE[int]} speedtest-cli > /dev/null 2>&1
           checkupdate
@@ -177,8 +177,8 @@ bandwidth(){
           tar -xvf speedtest-go_1.5.2_Linux.tar.gz
           chmod 777 speedtest-go
           mv speedtest-go /usr/local/bin/ 
-          rm -rf README.md LICENSE > /dev/null 2>&1
-          rm -rf speedtest-go_1.5.2_Linux.tar.gz > /dev/null 2>&1
+          rm -rf README.md* LICENSE* > /dev/null 2>&1
+          rm -rf speedtest-go_1.5.2_Linux.tar.gz* > /dev/null 2>&1
         fi
     fi
     systemctl daemon-reload
@@ -202,8 +202,8 @@ uninstall(){
     if [ -f "/etc/systemd/system/cpu-limit.service" ]; then
         systemctl stop cpu-limit.service
         systemctl disable cpu-limit.service
-        rm /etc/systemd/system/cpu-limit.service
-        rm /usr/local/bin/cpu-limit.sh
+        rm -rf /etc/systemd/system/cpu-limit.service
+        rm -rf /usr/local/bin/cpu-limit.sh*
 	      kill $(pgrep dd) &> /dev/null  
 	      kill $(ps -efA | grep cpu-limit.sh | awk '{print $2}') &> /dev/null  
     fi
@@ -212,9 +212,9 @@ uninstall(){
     if [ -f "/etc/systemd/system/memory-limit.service" ]; then
         systemctl stop memory-limit.service
         systemctl disable memory-limit.service
-        rm /etc/systemd/system/memory-limit.service
-        rm /usr/local/bin/memory-limit.sh
-	      rm /dev/shm/file
+        rm -rf /etc/systemd/system/memory-limit.service
+        rm -rf /usr/local/bin/memory-limit.sh*
+	      rm -rf /dev/shm/file
 	      kill $(ps -efA | grep memory-limit.sh | awk '{print $2}') &> /dev/null  
         rm -rf /tmp/memory-limit.pid &> /dev/null  
         _yellow "已卸载内存占用 - The memory limit script has been uninstalled successfully."
@@ -222,11 +222,11 @@ uninstall(){
     if [ -f "/etc/systemd/system/bandwidth_occupier.service" ]; then
         systemctl stop bandwidth_occupier
         systemctl disable bandwidth_occupier
-        rm /etc/systemd/system/bandwidth_occupier.service
-        rm /usr/local/bin/bandwidth_occupier.sh
+        rm -rf /etc/systemd/system/bandwidth_occupier.service
+        rm -rf /usr/local/bin/bandwidth_occupier.sh*
 	      systemctl stop bandwidth_occupier.timer
     	  systemctl disable bandwidth_occupier.timer
-	      rm /etc/systemd/system/bandwidth_occupier.timer
+	      rm -rf /etc/systemd/system/bandwidth_occupier.timer
         rm -rf /usr/local/bin/speedtest-go &> /dev/null  
 	      kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') &> /dev/null  
         rm -rf /tmp/bandwidth_occupier.pid &> /dev/null 
