@@ -14,13 +14,17 @@
 
 为避免GitHub的CDN抽风加载不了新内容，所有新更新已使用[Gitlab仓库](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script)，本仓库仅作存档
 
-请留意脚本当前更新日期：2023.03.25.18.55
+由于speedtest-go的release依赖于GitHub，所以请检查 [www.githubstatus.com](https://www.githubstatus.com/) ,有问题时无法安装带宽占用
+
+请留意脚本当前更新日期：2023.04.19.17.28
 
 ### 基础开发完毕，测试中，有问题请在issues中反馈
 
 选项1安装，选项2卸载，选项3更新安装引导脚本，选项4退出脚本
 
 安装过程中无脑回车则全部可选的占用都占用，不需要什么占用输入```n```再回车
+
+如果选择带宽占用，会询问使用speedtest-go占用还是使用wget占用，按照提示进行选择即可
 
 最后会询问是否需要带宽占用的参数自定义，这时候默认选项就是```n```，回车就使用默认配置，输入```y```再回车则需要按照提示自定义参数
 
