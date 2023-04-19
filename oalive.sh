@@ -207,18 +207,20 @@ download_speedtest_go_file() {
     if [ "$sys_bit" = "aarch64" ]; then
         sys_bit="arm64"
     fi
+    rm -rf speedtest-go*
     local url3="https://github.com/showwin/speedtest-go/releases/download/v1.6.0/speedtest-go_1.6.0_Linux_${sys_bit}.tar.gz"
-    curl -o /root/speedtest.tar.gz $url3
+    wget $url3
     if [ $? -eq 0 ]; then
         _green "Used speedtest-go"
     fi
     if [ ! -d "/etc/speedtest-cli" ]; then
         mkdir -p "/etc/speedtest-cli"
     fi
-    if [ -f "/root/speedtest.tar.gz" ]; then
-        tar -zxf /root/speedtest.tar.gz -C /etc/speedtest-cli
+    cd /root >/dev/null 2>&1
+    if [ -f "/root/speedtest-go_1.6.0_Linux_x86_64.tar.gz" ]; then
+        tar -zxf speedtest-go_1.6.0_Linux_x86_64.tar.gz -C /etc/speedtest-cli
         chmod 777 /etc/speedtest-cli/speedtest-go
-        rm -f /root/speedtest.tar.gz*
+        rm -f speedtest-go*
     else
         _red "Error: Failed to download speedtest tool."
         exit 1
