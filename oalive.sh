@@ -2,7 +2,8 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.03.25.18.55"
+ver="2023.04.19.17.28"
+cd /root >/dev/null 2>&1
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
 _yellow() { echo -e "\033[33m\033[01m$@\033[0m"; }
@@ -195,6 +196,71 @@ bandwidth(){
     _green "The bandwidth limit script has been installed at /usr/local/bin/bandwidth_occupier.sh"
 }
 
+download_speedtest_go_file() {
+    cd /root >/dev/null 2>&1
+    file="/etc/speedtest-cli/speedtest-go"
+    if [[ -e "$file" ]]; then
+        _green "speedtest-go found"
+        return
+    fi
+    local sys_bit="$1"
+    if [ "$sys_bit" = "aarch64" ]; then
+        sys_bit="arm64"
+    fi
+    local url3="https://github.com/showwin/speedtest-go/releases/download/v1.6.0/speedtest-go_1.6.0_Linux_${sys_bit}.tar.gz"
+    curl -o /root/speedtest.tar.gz $url3
+    if [ $? -eq 0 ]; then
+        _green "Used speedtest-go"
+    fi
+    if [ ! -d "/etc/speedtest-cli" ]; then
+        mkdir -p "/etc/speedtest-cli"
+    fi
+    if [ -f "/root/speedtest.tar.gz" ]; then
+        tar -zxf /root/speedtest.tar.gz -C /etc/speedtest-cli
+        chmod 777 /etc/speedtest-cli/speedtest-go
+        rm -f /root/speedtest.tar.gz*
+    else
+        _red "Error: Failed to download speedtest tool."
+        exit 1
+    fi
+}
+
+install_speedtest_go() {
+    cd /root >/dev/null 2>&1
+    _yellow "checking speedtest"
+    sys_bit=""
+    local sysarch="$(uname -m)"
+    case "${sysarch}" in
+        "x86_64"|"x86"|"amd64"|"x64") sys_bit="x86_64";;
+        "i386"|"i686") sys_bit="i386";;
+        "aarch64"|"armv7l"|"armv8"|"armv8l") sys_bit="aarch64";;
+        "s390x") sys_bit="s390x";;
+        "riscv64") sys_bit="riscv64";;
+        "ppc64le") sys_bit="ppc64le";;
+        "ppc64") sys_bit="ppc64";;
+        *) sys_bit="x86_64";;
+    esac
+    download_speedtest_go_file "${sys_bit}"
+}
+
+bandwidth_speedtest_go(){
+  install_speedtest_go
+  cd /root >/dev/null 2>&1
+  curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/bandwidth_occupier.timer -o bandwidth_occupier.timer && chmod +x bandwidth_occupier.timer
+  mv bandwidth_occupier.timer /etc/systemd/system/bandwidth_occupier.timer
+  curl -L https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/bandwidth_occupier.service -o bandwidth_occupier.service && chmod +x bandwidth_occupier.service
+  mv bandwidth_occupier.service /etc/systemd/system/bandwidth_occupier.service
+  file_content=$(cat /etc/systemd/system/bandwidth_occupier.service)
+  new_file_content=$(echo "$file_content" | sed '7s/.*/ExecStart=\/bin\/bash -c '\''for i in {1..10}; do \/etc\/speedtest-cli\/speedtest-go; done'\''/')
+  echo "$new_file_content" > /etc/systemd/system/bandwidth_occupier.service
+  systemctl daemon-reload
+  systemctl enable bandwidth_occupier.timer
+  if systemctl start bandwidth_occupier.timer ; then
+    _green "带宽占用安装成功 speedtest-go路径: /etc/speedtest-cli/speedtest-go"
+  fi
+  _green "The speedtest-go has been installed at /etc/speedtest-cli/speedtest-go"
+}
+
 uninstall(){
     docker stop boinc &> /dev/null  
     docker rm boinc &> /dev/null    
@@ -229,7 +295,8 @@ uninstall(){
 	      rm -rf /etc/systemd/system/bandwidth_occupier.timer
         rm -rf /usr/local/bin/speedtest-go &> /dev/null  
 	      kill $(ps -efA | grep bandwidth_occupier.sh | awk '{print $2}') &> /dev/null  
-        rm -rf /tmp/bandwidth_occupier.pid &> /dev/null 
+        rm -rf /tmp/bandwidth_occupier.pid &> /dev/null
+        rm -rf /etc/speedtest-cli &> /dev/null
         _yellow "已卸载带宽占用 - The bandwidth occupier and timer script has been uninstalled successfully."
     fi
     systemctl daemon-reload
@@ -285,6 +352,9 @@ check_services_status() {
             _blue "带宽占用使用配置：自动检测带宽每隔45分钟占用6分钟以最大带宽的30%速率下载文件"
         fi
         _blue "bandwidth_occupier.service 已设置"
+    elif [ -e "/etc/speedtest-cli/speedtest-go" ]; then
+        _blue "带宽占用使用配置：使用speedtest-go每45分钟执行10次进行占用，使用机器最大的带宽"
+        _blue "bandwidth_occupier.service 已设置"
     else
         _blue "bandwidth_occupier.service 未设置"
     fi
@@ -321,7 +391,14 @@ main() {
             fi
             reading "需要限制带宽吗? ([y]/n): " bandwidth_confirm
             if [ "$bandwidth_confirm" != "n" ] && [ "$bandwidth_confirm" != "N" ]; then
-                bandwidth
+                echo "(1) 使用speedtest-go消耗带宽(无法实时限制流量，消耗时占满机器带宽，但所有机器都能保证有占用)"
+                echo "(2) 使用wget下载测速文件消耗带宽(可实时限制流量，消耗时按百分比占用带宽，但可能在某些机器上执行失败无法占用)"
+                reading "请输入选择的选项(默认回车为选项2): " wget_confirm
+                if [ "$wget_confirm" == "1" ] || [ "$wget_confirm" == 1 ]; then
+                  bandwidth_speedtest_go
+                else
+                  bandwidth
+                fi
             fi
             ;;
         2)
