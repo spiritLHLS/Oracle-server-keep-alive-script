@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.04.19.17.28"
+ver="2023.04.20.17.40"
 cd /root >/dev/null 2>&1
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
@@ -216,8 +216,8 @@ download_speedtest_go_file() {
     if [ ! -d "/etc/speedtest-cli" ]; then
         mkdir -p "/etc/speedtest-cli"
     fi
-    if [ -f "./speedtest-go_1.6.0_Linux_x86_64.tar.gz" ]; then
-        tar -zxf speedtest-go_1.6.0_Linux_x86_64.tar.gz -C /etc/speedtest-cli
+    if [ -f "./speedtest-go_1.6.0_Linux_${sys_bit}.tar.gz" ]; then
+        tar -zxf speedtest-go_1.6.0_Linux_${sys_bit}.tar.gz -C /etc/speedtest-cli
         chmod 777 /etc/speedtest-cli/speedtest-go
         rm -f speedtest-go*
     else
