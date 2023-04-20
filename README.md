@@ -16,7 +16,7 @@
 
 由于speedtest-go的release依赖于GitHub，所以请检查 [www.githubstatus.com](https://www.githubstatus.com/) ,有问题时无法安装带宽占用
 
-请留意脚本当前更新日期：2023.04.19.17.28
+请留意脚本当前更新日期：2023.04.20.17.40
 
 ### 基础开发完毕，测试中，有问题请在issues中反馈
 
