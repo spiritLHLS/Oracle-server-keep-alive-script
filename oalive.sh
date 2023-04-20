@@ -216,8 +216,7 @@ download_speedtest_go_file() {
     if [ ! -d "/etc/speedtest-cli" ]; then
         mkdir -p "/etc/speedtest-cli"
     fi
-    cd /root >/dev/null 2>&1
-    if [ -f "/root/speedtest-go_1.6.0_Linux_x86_64.tar.gz" ]; then
+    if [ -f "./speedtest-go_1.6.0_Linux_x86_64.tar.gz" ]; then
         tar -zxf speedtest-go_1.6.0_Linux_x86_64.tar.gz -C /etc/speedtest-cli
         chmod 777 /etc/speedtest-cli/speedtest-go
         rm -f speedtest-go*
