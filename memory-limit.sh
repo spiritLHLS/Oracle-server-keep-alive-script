@@ -28,7 +28,7 @@ do
     stress_mem=$(echo "$target_mem_usage - $mem_used" | bc)
     echo "stress_mem: $stress_mem"
     stress_mem_in_mb=$(echo "scale=0; $stress_mem / 1024" | bc)
-    echo "stress_mem_in_mb: $stress_mem_in_gb"
+    echo "stress_mem_in_mb: $stress_mem_in_mb"
     fallocate -l "${stress_mem_in_mb}M" /dev/shm/file
     sleep 300
     rm /dev/shm/file
