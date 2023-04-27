@@ -2,6 +2,15 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
+if [[ -d "/usr/share/locale/en_US.UTF-8" ]]; then
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANGUAGE=en_US.UTF-8
+else
+  export LANG=C.UTF-8
+  export LC_ALL=C.UTF-8
+  export LANGUAGE=C.UTF-8
+fi
 pid_file=/tmp/memory-limit.pid
 if [ -e "${pid_file}" ]; then
   # 如果 PID 文件存在，则读取其中的 PID
