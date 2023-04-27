@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.04.20.17.40"
+ver="2023.04.27.10.50"
 cd /root >/dev/null 2>&1
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
@@ -26,7 +26,15 @@ for ((int = 0; int < ${#REGEX[@]}; int++)); do
         [[ -n $SYSTEM ]] && break
     fi
 done
-
+if [[ -d "/usr/share/locale/en_US.UTF-8" ]]; then
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANGUAGE=en_US.UTF-8
+else
+  export LANG=C.UTF-8
+  export LC_ALL=C.UTF-8
+  export LANGUAGE=C.UTF-8
+fi
 [[ $EUID -ne 0 ]] && echo -e "${RED}请使用 root 用户运行本脚本！${PLAIN}" && exit 1
 
 checkver(){
