@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.04.27.10.50"
+ver="2023.05.26.19.40"
 cd /root >/dev/null 2>&1
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
@@ -169,11 +169,11 @@ bandwidth(){
         if ! command -v speedtest-cli > /dev/null 2>&1; then
           ARCH=$(uname -m)
           if [[ "$ARCH" == "armv7l" || "$ARCH" == "armv8" || "$ARCH" == "armv8l" || "$ARCH" == "aarch64" ]]; then
-            FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_arm64.tar.gz"
+            FILE_URL="${cdn_success_url}https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_arm64.tar.gz"
           elif [[ $ARCH == "i386" ]]; then
-            FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_i386.tar.gz"
+            FILE_URL="${cdn_success_url}https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_i386.tar.gz"
           elif [[ $ARCH == "x86_64" ]]; then
-            FILE_URL="https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_x86_64.tar.gz"
+            FILE_URL="${cdn_success_url}https://github.com/showwin/speedtest-go/releases/download/v1.5.2/speedtest-go_1.5.2_Linux_x86_64.tar.gz"
           else
             _red "不支持该架构：$ARCH"
             exit 1
@@ -204,6 +204,29 @@ bandwidth(){
     _green "The bandwidth limit script has been installed at /usr/local/bin/bandwidth_occupier.sh"
 }
 
+cdn_urls=("https://cdn.spiritlhl.workers.dev/" "https://cdn3.spiritlhl.net/" "https://cdn1.spiritlhl.net/" "https://ghproxy.com/" "https://cdn2.spiritlhl.net/")
+
+check_cdn() {
+  local o_url=$1
+  for cdn_url in "${cdn_urls[@]}"; do
+    if curl -sL -k "$cdn_url$o_url" --max-time 6 | grep -q "success" > /dev/null 2>&1; then
+      export cdn_success_url="$cdn_url"
+      return
+    fi
+    sleep 0.5
+  done
+  export cdn_success_url=""
+}
+
+check_cdn_file() {
+    check_cdn "https://raw.githubusercontent.com/spiritLHLS/ecs/main/back/test"
+    if [ -n "$cdn_success_url" ]; then
+        _yellow "CDN available, using CDN"
+    else
+        _yellow "No CDN available, no use CDN"
+    fi
+}
+
 download_speedtest_go_file() {
     cd /root >/dev/null 2>&1
     file="/etc/speedtest-cli/speedtest-go"
@@ -216,7 +239,7 @@ download_speedtest_go_file() {
         sys_bit="arm64"
     fi
     rm -rf speedtest-go*
-    local url3="https://github.com/showwin/speedtest-go/releases/download/v1.6.0/speedtest-go_1.6.0_Linux_${sys_bit}.tar.gz"
+    local url3="${cdn_success_url}https://github.com/showwin/speedtest-go/releases/download/v1.6.0/speedtest-go_1.6.0_Linux_${sys_bit}.tar.gz"
     wget $url3
     if [ $? -eq 0 ]; then
         _green "Used speedtest-go"
@@ -335,6 +358,7 @@ pre_check() {
   check_and_install bc bc
   check_and_install fallocate util-linux
   check_and_install nproc coreutils
+  check_cdn_file
 }
 
 check_service_status() {
@@ -378,51 +402,52 @@ main() {
     echo "2. 卸载保活服务"
     echo "3. 一键更新脚本"
     echo "4. 退出程序"
-    reading "你的选择：" option
-    case $option in
-        1)
-            pre_check
-            echo "选择你需要占用CPU时使用的程序:"
-            echo "1. 本机DD模拟占用(20%~25%) [推荐]"
-            echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc) [不推荐]"
-	          echo "3. 不限制"
-            reading "你的选择：" cpu_option
-            if [ $cpu_option == 2 ]; then
-                boinc
-	          elif [ $cpu_option == 3 ]; then
-    		        echo ""
-            else
-                calculate
-            fi
-            reading "需要限制内存吗? ([y]/n): " memory_confirm
-            if [ "$memory_confirm" != "n" ] && [ "$memory_confirm" != "N" ]; then
-                memory
-            fi
-            reading "需要限制带宽吗? ([y]/n): " bandwidth_confirm
-            if [ "$bandwidth_confirm" != "n" ] && [ "$bandwidth_confirm" != "N" ]; then
-                echo "(1) 使用speedtest-go消耗带宽(无法实时限制流量，消耗时占满机器带宽，但所有机器都能保证有占用)"
-                echo "(2) 使用wget下载测速文件消耗带宽(可实时限制流量，消耗时按百分比占用带宽，但可能在某些机器上执行失败无法占用)"
-                reading "请输入选择的选项(默认回车为选项2): " wget_confirm
-                if [ "$wget_confirm" == "1" ] || [ "$wget_confirm" == 1 ]; then
-                  bandwidth_speedtest_go
-                else
-                  bandwidth
-                fi
-            fi
-            ;;
-        2)
-            uninstall
-            exit 0
-            ;;
-        3)
-            checkver
-            ;;
-        *)
-            echo "无效选项，退出程序"
-            exit 1
-            ;;
-    esac
-}
+    while true
+    do
+      reading "你的选择：" option
+      case $option in
+          1)
+              pre_check
+              echo "选择你需要占用CPU时使用的程序:"
+              echo "1. 本机DD模拟占用(20%~25%) [推荐]"
+              echo "2. BOINC-docker服务(20%)(https://github.com/BOINC/boinc) [不推荐]"
+              echo "3. 不限制"
+              reading "你的选择：" cpu_option
+              if [ $cpu_option == 2 ]; then
+                  boinc
+              elif [ $cpu_option == 3 ]; then
+                  echo ""
+              else
+                  calculate
+              fi
+              reading "需要限制内存吗? ([y]/n): " memory_confirm
+              if [ "$memory_confirm" != "n" ] && [ "$memory_confirm" != "N" ]; then
+                  memory
+              fi
+              reading "需要限制带宽吗? ([y]/n): " bandwidth_confirm
+              if [ "$bandwidth_confirm" != "n" ] && [ "$bandwidth_confirm" != "N" ]; then
+                  echo "(1) 使用speedtest-go消耗带宽(无法实时限制流量，消耗时占满机器带宽，但所有机器都能保证有占用)"
+                  echo "(2) 使用wget下载测速文件消耗带宽(可实时限制流量，消耗时按百分比占用带宽，但可能在某些机器上执行失败无法占用)"
+                  reading "请输入选择的选项(默认回车为选项2): " wget_confirm
+                  if [ "$wget_confirm" == "1" ] || [ "$wget_confirm" == 1 ]; then
+                    bandwidth_speedtest_go
+                  else
+                    bandwidth
+                  fi
+              fi ; break ;;
+          2)
+              uninstall
+              exit 0 ; break ;;
+          3)
+              checkver ; break ;;  
+          4)
+              echo "退出程序"
+              exit 1 ; break ;;
+          *)
+              echo "无效选项，请重新输入" ;;
+      esac
+    done
+} 
 
 
 main
