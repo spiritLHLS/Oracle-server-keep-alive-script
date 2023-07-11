@@ -18,11 +18,13 @@
 
 请留意脚本当前更新日期：2023.05.26.19.40
 
+**由于友人实测，资源占用感觉也是玄学，一个号四个服务器全部停机，但号还在，也有人一直不占用，但就是没停机的问题，所以该项目将长期保持现有状态，非必要不再更新**
+
 ### 更新
 
 2023.05.26 修复部分地区下载speedtest-go缓慢的问题，自动判断可用cdn使用CDN加速下载，选项修复支持输入错误重新输入
 
-### 基础开发完毕，测试中，有问题请在issues中反馈
+### 说明
 
 选项1安装，选项2卸载，选项3更新安装引导脚本，选项4退出脚本
 
@@ -48,7 +50,7 @@ bash oalive.sh
 bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/raw/main/oalive.sh)
 ```
 
-### 说明
+### 特点
 
 - 提供两种CPU占用模式：DD模拟占用和科学计算模式，用户可以自由选择，占用范围设置在15%至25%之间，更推荐DD模拟占用
 - DD模拟占用在守护进程中设置了CPU占用的最高限制
@@ -64,10 +66,6 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 - 对所有进程执行增加唯一性检测，避免重复运行，使用PID文件进行判断。
 
 如若不希望一键的，希望自定义设置时间的，请查看[README_CRON.md](https://gitlab.com/spiritysdx/Oracle-server-keep-alive-script/-/blob/main/%20README_CRON.md)自行设置定时任务
-
-### 待开发内容
-
-使用docker整合所有脚本，方便使用
 
 ### 友链
 
