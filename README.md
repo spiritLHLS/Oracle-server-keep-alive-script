@@ -1,5 +1,7 @@
 # Oracle-server-keep-alive-script
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FspiritLHLS%2FOracle-server-keep-alive-script&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 ## 甲骨文服务器保活脚本
 
 适配系统：已在Ubuntu 20+，Debian 10+, Centos 7+, Oracle linux 8+，AlmaLinux 8.5+
@@ -16,13 +18,11 @@
 
 由于speedtest-go的release依赖于GitHub，所以请检查 [www.githubstatus.com](https://www.githubstatus.com/) ,有问题时无法安装带宽占用
 
-请留意脚本当前更新日期：2023.05.26.19.40
+请留意脚本当前更新日期：2023.08.22.18.41
 
 **由于友人实测，资源占用感觉也是玄学，一个号四个服务器全部停机，但号还在，也有人一直不占用，但就是没停机的问题，所以该项目将长期保持现有状态，非必要不再更新**
 
-### 更新
-
-2023.05.26 修复部分地区下载speedtest-go缓慢的问题，自动判断可用cdn使用CDN加速下载，选项修复支持输入错误重新输入
+**也有说要在上面解析一个网址做一个网站挂着的，感觉也是玄学，自己测试吧**
 
 ### 说明
 
@@ -72,6 +72,10 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 VPS融合怪测评脚本
 
 https://github.com/spiritLHLS/ecs
+
+一键虚拟化项目
+
+https://virt.spiritlhl.net/
 
 ## Stargazers over time
 

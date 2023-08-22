@@ -16,7 +16,7 @@ if [ -e "${pid_file}" ]; then
   # 如果 PID 文件存在，则读取其中的 PID
   pid=$(cat "${pid_file}")
   # 检查该 PID 是否对应一个正在运行的进程
-  if ps -p "${pid}" > /dev/null; then
+  if ps -p "${pid}" >/dev/null; then
     echo "Error: Another instance of memory-limit.sh is already running with PID ${pid}"
     exit 1
   fi
@@ -24,10 +24,9 @@ if [ -e "${pid_file}" ]; then
   rm "${pid_file}"
   rm /dev/shm/file
 fi
-echo $$ > "${pid_file}"
+echo $$ >"${pid_file}"
 
-while true
-do
+while true; do
   mem_total=$(free | awk '/Mem/ {print $2}')
   mem_used=$(free | awk '/Mem/ {print $3}')
   mem_usage=$(echo "scale=2; $mem_used/$mem_total * 100.0" | bc)

@@ -17,14 +17,14 @@ if [ -e "${pid_file}" ]; then
   # 如果 PID 文件存在，则读取其中的 PID
   pid=$(cat "${pid_file}")
   # 检查该 PID 是否对应一个正在运行的进程
-  if ps -p "${pid}" > /dev/null; then
+  if ps -p "${pid}" >/dev/null; then
     echo "Error: Another instance of cpu-limit.sh is already running with PID ${pid}"
     exit 1
   fi
   # 如果 PID 文件存在，但对应的进程已经停止运行，删除 PID 文件
   rm "${pid_file}"
 fi
-echo $$ > "${pid_file}"
+echo $$ >"${pid_file}"
 
 # function calculate_primes() {
 #   size=$1
@@ -35,7 +35,7 @@ echo $$ > "${pid_file}"
 #       fi
 #     done
 #     if [ $j -gt $((i/2)) ]; then
-#       echo $i &> /dev/null  
+#       echo $i &> /dev/null
 #     fi
 #   done
 # }
@@ -75,12 +75,11 @@ echo $$ > "${pid_file}"
 #   done
 # }
 
-high_main(){
-  for ((i=0;i<$cores;i++))
-  do
-      {
-          dd if=/dev/zero of=/dev/null
-      } &
+high_main() {
+  for ((i = 0; i < $cores; i++)); do
+    {
+      dd if=/dev/zero of=/dev/null
+    } &
   done
   wait
 }
