@@ -2,7 +2,7 @@
 # by spiritlhl
 # from https://github.com/spiritLHLS/Oracle-server-keep-alive-script
 
-ver="2023.08.22.18.41"
+ver="2023.09.20.11.10"
 cd /root >/dev/null 2>&1
 _red() { echo -e "\033[31m\033[01m$@\033[0m"; }
 _green() { echo -e "\033[32m\033[01m$@\033[0m"; }
@@ -99,7 +99,7 @@ calculate() {
     total_cores=$(nproc)
   fi
   if [ "$total_cores" == "2" ] || [ "$total_cores" == "3" ] || [ "$total_cores" == "4" ]; then
-    cpu_limit=$(echo "$total_cores * 15" | bc)
+    cpu_limit=$(echo "$total_cores * 20" | bc)
   else
     cpu_limit=25
   fi
