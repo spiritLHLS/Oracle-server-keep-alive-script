@@ -147,12 +147,12 @@ bandwidth() {
   reading "需要自定义带宽占用的设置吗? (y/[n]) " answer
   if [ "$answer" == "y" ]; then
     # sed -i '/^bandwidth\|^rate/s/^/#/' /usr/local/bin/bandwidth_occupier.sh
-    sed -i '32,38s/^/#/' /usr/local/bin/bandwidth_occupier.sh
+    sed -i '41,47s/^/# /' /usr/local/bin/bandwidth_occupier.sh
     reading "输入你需要的带宽大小(以mbps为单位，例如10mbps输入10): " rate_mbps
     rate=$((rate_mbps * 1000000))
     reading "输入你需要请求的时长(以分钟为单位，例如10分钟输入10): " timeout
-    sed -i 's/^timeout/#timeout/' /usr/local/bin/bandwidth_occupier.sh
-    sed -i '38a\timeout '$timeout'm wget $selected_url --limit-rate='$rate' -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
+    # sed -i 's/^timeout/#timeout/' /usr/local/bin/bandwidth_occupier.sh
+    sed -i '47a\timeout '$timeout'm wget $selected_url --limit-rate='$rate' -O /dev/null &' /usr/local/bin/bandwidth_occupier.sh
     reading "输入你需要间隔的时长(以分钟为单位，例如45分钟输入45): " interval
     sed -i "s/^OnUnitActiveSec.*/OnUnitActiveSec=$interval/" /etc/systemd/system/bandwidth_occupier.timer
   else
