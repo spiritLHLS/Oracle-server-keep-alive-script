@@ -69,15 +69,21 @@ bash <(wget -qO- --no-check-certificate https://gitlab.com/spiritysdx/Oracle-ser
 
 ### 友链
 
-VPS融合怪测评脚本
+VPS融合怪测评项目
 
-https://github.com/spiritLHLS/ecs
+Go版本：https://github.com/oneclickvirt/ecs
+
+Shell版本：https://github.com/spiritLHLS/ecs
 
 一键虚拟化项目
 
 国内 https://virt.spiritlhl.net/
 
 国际 https://www.spiritlhl.net/
+
+### 广告
+
+[<img src="https://api.gitsponsors.com/api/badge/img?id=596101676" height="20">](https://api.gitsponsors.com/api/badge/link?p=3YMjwvbVdLpQ+Zz4MKUbgCI1mGsXZjq+fz/92W+Ah5OWJgqCZBtdwUyIZeD44B6oiRVqaf3K5KfFx01qDhYhGK8zyQd3ePQJqFbHDxDHz+HT+b3nkxEu2oCJ5DBaazaO7Puxn/A8rlLPHgY6demyVg==)
 
 ## Stargazers over time
 
