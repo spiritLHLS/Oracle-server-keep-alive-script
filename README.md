@@ -83,7 +83,7 @@ Shell版本：https://github.com/spiritLHLS/ecs
 
 ### 广告
 
-[<img src="https://api.gitsponsors.com/api/badge/img?id=596101676" height="20">](https://api.gitsponsors.com/api/badge/link?p=3YMjwvbVdLpQ+Zz4MKUbgCI1mGsXZjq+fz/92W+Ah5OWJgqCZBtdwUyIZeD44B6oiRVqaf3K5KfFx01qDhYhGK8zyQd3ePQJqFbHDxDHz+HT+b3nkxEu2oCJ5DBaazaO7Puxn/A8rlLPHgY6demyVg==)
+
 
 ## Stargazers over time
 
