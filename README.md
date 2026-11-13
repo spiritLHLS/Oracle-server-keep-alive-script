@@ -138,4 +138,4 @@ VPS融合怪测评项目：
 
 ## Stargazers over time
 
-[![Stargazers over time](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script.svg)](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script)
+[![Stargazers over time](https://api.star-history.com/chart?repos=spiritLHLS/Oracle-server-keep-alive-script&type=date)](https://starchart.cc/spiritLHLS/Oracle-server-keep-alive-script)
